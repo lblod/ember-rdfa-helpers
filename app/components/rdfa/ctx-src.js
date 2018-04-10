@@ -1,1 +1,1 @@
-export { default } from 'ember-rdfa-helpers/components/rdfa/ctx-src';
+export { default } from '@lblod/ember-rdfa-helpers/components/rdfa/ctx-src';

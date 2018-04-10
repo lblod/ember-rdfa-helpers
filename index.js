@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-rdfa-helpers'
+  name: '@lblod/ember-rdfa-helpers'
 };

@@ -1,1 +1,1 @@
-export { default } from 'ember-rdfa-helpers/components/with-rdfa-resource';
+export { default } from '@lblod/ember-rdfa-helpers/components/with-rdfa-resource';
