@@ -1,5 +1,5 @@
 {{#each value as |model|}}
-  <a href={{model.uri}} property={{rdfaProperty}} style={{style}}>
+  <a href={{model.uri}} property={{rdfaProperty}} style={{style}} typeof={{typeof}}>
     {{yield model
       (hash
       src=(component "rdfa/ctx-src" resource=model)

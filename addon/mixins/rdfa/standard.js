@@ -53,5 +53,16 @@ export default Mixin.create({
     const p = this.get("p");
     const resource = this.get("resource");
     return property || get(resource, `rdfaBindings.${p}`);
+  }),
+
+  /**
+   * Returns the semantic type of the value if it has one.
+   */
+  typeof: computed( "value.uri", function() {
+    const value = this.get("value");
+    if( value && get(value, "uri") )
+      return get(value, "rdfaBindings.class");
+    else
+      return null;
   })
 });
