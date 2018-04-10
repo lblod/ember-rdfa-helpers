@@ -1,0 +1,10 @@
+{{#each value as |model|}}
+  {{yield model
+    (hash
+    src=(component "rdfa/ctx-src" resource=model)
+    prop=(component "rdfa/ctx-prop" resource=model)
+    with-each-context=(component "rdfa/ctx-with-each-context" resource=model)
+    each-as-link=(component "rdfa/ctx-each-as-link" resource=model)
+    each-resource=(component "rdfa/ctx-each-resource" resource=model)
+    link=(component "rdfa/ctx-as-link" resource=model))}}
+{{/each}}
