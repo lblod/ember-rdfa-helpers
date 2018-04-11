@@ -6,7 +6,7 @@ import { computed, get } from '@ember/object';
 export default Component.extend({
   layout,
   // vocab :: specified on current element when set
-  tagName: "span",
+  tagName: "div",
   attributeBindings: ["vocab", "maybeResource:resource", "typeof"],
   maybeVocab: computed( "vocab", function() {
     const vocab = this.get('vocab');

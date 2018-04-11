@@ -4,5 +4,6 @@ import StandardRdfaComponent from '../../mixins/rdfa/standard';
 
 export default Component.extend(StandardRdfaComponent, {
   layout,
+  tagName: 'span',
   attributeBindings: ["style", "rdfaProperty:property"]
 });
