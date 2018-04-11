@@ -13,8 +13,8 @@ export default Component.extend({
     return vocab && `vocab="${vocab}"`;
   }),
   maybeResource: oneWay("resource.uri"),
-  typeof: computed( "value.uri", function() {
-    const value = this.get("value");
+  typeof: computed( "resource.uri", function() {
+    const value = this.get("resource");
     if( value && get(value, "uri") )
       return get(value, "rdfaBindings.class");
     else
