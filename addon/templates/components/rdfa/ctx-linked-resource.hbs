@@ -1,4 +1,4 @@
-{{#if hasBlock}}
+<div property={{rdfaProperty}} style={{style}} resource={{value.uri}} typeof={{value.rdfaBindings.class}}>
   {{yield value
     (hash
     src=(component "rdfa/ctx-src" resource=value)
@@ -8,6 +8,4 @@
     each-resource=(component "rdfa/ctx-each-resource" resource=value)
     linked-resource=(component "rdfa/ctx-linked-resource" resource=value)
     link=(component "rdfa/ctx-as-link" resource=value))}}
-{{else}}
-  {{value}}
-{{/if}}
+</div>

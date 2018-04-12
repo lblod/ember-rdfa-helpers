@@ -16,7 +16,7 @@ export default Mixin.create({
     const oldP = this.get('oldP');
     if( oldP )
       this.removeObserver( `resource.${oldP}`, this, "updateResourceValue" );
-    
+
     const p = this.get('p');
     if ( p ) {
       this.addObserver( `resource.${p}`, this, "updateResourceValue" );
