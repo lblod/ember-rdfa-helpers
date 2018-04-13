@@ -79,7 +79,7 @@ Renders a has-many relationship as a link with correct semantics and yields a bl
   - _optional_ `property`: Override the property with a different semantic property.
   - _optional_ style: Style is set as an attribute on the tag.
   - _required_ `block( value, context )`: A block must be given.  It is yielded for each supplied entity of the relationship and receives the linked value, followed by a new context for that value.  This context can be used to further create nested elements.
-  
+
 #### `ctx.link`
 
 Renders a link to a different resource.  Either because it links to a related object, or because the property contains a URL.
@@ -92,7 +92,7 @@ Renders a link to a different resource.  Either because it links to a related ob
   - _optional_ `property`: Override the property with a different semantic property
   - _optional_ style: Style is set as an attribute on the tag.
   - _optional_ `block( value, context )`: If a block is given, it is called with the supplied value and a context for further scoping.  This only makes sense when used with a relationship.
-  
+
 
 #### `ctx.src`
 
@@ -107,6 +107,17 @@ Renders a relationship as an src property.  This can be used to render images wi
   - _optional_ style: Style is set as an attribute on the tag.
   - _optional_ `block( value, context )`: If a block is given, it is rendered rather than injecting the contents of the property.
 
+#### `ctx.linked-resource`
+
+Sets up the context and scope for a resource in the relationship.  Yields the resource and a new context for using the related elements.
+
+    {{#with-rdfa-resource resource=person as |ctx|}}
+      {{ctx.prop p="name"}}
+      {{#ctx.linked-resource p="idCard" as |card ictx|}}
+        {{ictx.prop p="number"}}
+      {{/ctx.linked-resource}}
+    {{/with-rdfa-resource}}
+
 #### `ctx.each-resource`
 
 Sets up the context and scope for each resource in the relationship.  Yields the resource and a new context for using the related elements.
@@ -115,7 +126,7 @@ Sets up the context and scope for each resource in the relationship.  Yields the
       {{ctx.prop p="name"}}
       {{#ctx.each-resource p="accounts" as |account actx|}}
         {{#actx.link p="accountPage"}}{{account.name}}{{/actx.link}} - {{actx.link p="serviceHomepage"}}
-      {{/ctx.each-as-link}}
+      {{/ctx.each-resource}}
     {{/with-rdfa-resource}}
 
 #### `ctx.with-each-context`
@@ -151,4 +162,4 @@ For more information on using ember-cli, visit [https://ember-cli.com/](https://
 
 For more information on RDFa, visit https://rdfa.info/
 
-For more information on common predicates used for Search Engine Optimization (SEO), see https://schema.org 
+For more information on common predicates used for Search Engine Optimization (SEO), see https://schema.org
