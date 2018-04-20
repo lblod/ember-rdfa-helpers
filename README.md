@@ -148,18 +148,3 @@ If new forms of output should be supported, a new component should be made in th
 * `git clone <repository-url>` this repository
 * `cd ember-rdfa-helpers`
 * `npm install`
-
-
-## Running Tests
-
-This application is lacking tests for the moment.  These should be added in the future in order to ensure various use-cases are possible.
-
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
-
-For more information on RDFa, visit https://rdfa.info/
-
-For more information on common predicates used for Search Engine Optimization (SEO), see https://schema.org
