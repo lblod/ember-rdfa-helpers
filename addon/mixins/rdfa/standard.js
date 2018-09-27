@@ -1,5 +1,4 @@
 import { observer } from '@ember/object';
-import { getProperties } from '@ember/object';
 import { get } from '@ember/object';
 import { computed } from '@ember/object';
 import Mixin from '@ember/object/mixin';
