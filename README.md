@@ -31,7 +31,31 @@ It is assumed that each object contains a `uri` property which stores the URI of
 
 ### component helpers
 
+The component helpers have evolved between versions.  The library currently supports a modernized and an older syntactic version.
+
+The new version is described by `with-rdfa-context`, `ctx.get` and `ctx.each`.  All other keys describe the new syntax.  Both syntaxes cannot be mixed.
+
 In order to use the helpers, the first object's scope needs to be defined.  This is done by use of the `with-rdfa-resource` component.  Other components can be used by depending on the context object retrieved from this component.
+
+#### `with-rdfa-context`
+
+Sets up a new RDFa context.  This is equivalent to `with-rdfa-resource`.
+
+#### `ctx.get`
+
+Gets a property from the resource and applies the right bindings.
+
+The following can be supplied to `ctx.get`:
+- A block which receives a contextual object for fetching content and the property's value as its second argument.
+- `link=true` creates a link to the related resource.
+
+#### `ctx.each`
+
+Allows looping over a relationship.
+
+The following can be supplied to `ctx.each`:
+- A block which receives a contextual object for fetching content and the property's value as its second argument.
+- `link=true` creates a link to the related resource.
 
 #### `with-rdfa-resource`
 

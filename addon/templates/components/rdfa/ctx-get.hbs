@@ -1,0 +1,56 @@
+{{#let (hash
+   get=(component "rdfa/ctx-get" model=value)
+   each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
+
+  {{#if link-to}}
+    {{!-- We want to link to a related resource with an ID matching
+       our own route. --}}
+    {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
+       should be handled automatically be introspecting the router.
+       --}}
+    {{#if resourceAttr}}
+      {{#link-to link-to property=rdfaProperty resource=value.uri typeof=typeof}}
+        {{yield componentHash value}}
+      {{/link-to}}
+    {{else}}
+      {{#link-to link-to property=rdfaProperty typeof=typeof}}
+        {{yield componentHash value}}
+      {{/link-to}}
+    {{/if}}
+  {{else}}
+    {{#if isResource}}
+      {{#if link}}
+        {{!-- We want to link to a related resource using its URI --}}
+        <a property={{rdfaProperty}} href={{value.uri}} typeof={{typeof}}>
+          {{#if (has-block)}}
+            {{yield componentHash value}}
+          {{else}}
+            {{value}}
+          {{/if}}
+        </a>
+      {{else}}
+        {{!-- We want to create a new scope for the resource --}}
+        {{#if (has-block)}}
+          {{!-- we assume divs for blocks and spans for values --}}
+          <div property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}>
+            {{yield componentHash value}}
+          </div>
+        {{else}}
+          {{!-- We can only share the related info as a span with no
+          contents as we have no standardised way of rendering
+          objects. --}}
+          <span property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}></span>
+        {{/if}}
+      {{/if}}
+    {{else}}
+      {{!-- We want to relate to a property --}}
+      {{#if (has-block)}}
+        <div property={{rdfaProperty}} content={{value}}>
+          {{yield value}}
+        </div>
+      {{else}}
+        <span property={{rdfaProperty}}>{{value}}</span>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+{{/let}}

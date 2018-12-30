@@ -1,0 +1,5 @@
+<div resource={{model.uri}} typeof={{model.rdfaBindings.class}}>
+  {{yield (hash
+    get=(component "rdfa/ctx-get" model=model)
+    each=(component "rdfa/ctx-each" model=model))}}
+</div>

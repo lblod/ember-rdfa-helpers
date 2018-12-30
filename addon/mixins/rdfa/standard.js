@@ -10,27 +10,27 @@ export default Mixin.create({
     return style && `style="${style}"`;
   }),
 
-  oldP: undefined,
+  oldProp: undefined,
 
-  pObserver: observer( 'resource', 'p', function() {
-    const oldP = this.get('oldP');
-    if( oldP )
-      this.removeObserver( `resource.${oldP}`, this, "updateResourceValue" );
+  propObserver: observer( 'model', 'prop', function() {
+    const oldProp = this.get('oldProp');
+    if( oldProp )
+      this.removeObserver( `model.${oldProp}`, this, "updatePropertyValue" );
 
-    const p = this.get('p');
-    if ( p ) {
-      this.addObserver( `resource.${p}`, this, "updateResourceValue" );
-      this.set('oldP', p);
+    const prop = this.get('prop');
+    if ( prop ) {
+      this.addObserver( `model.${prop}`, this, "updatePropertyValue" );
+      this.set('oldProp', prop);
     }
-    this.updateResourceValue();
+    this.updatePropertyValue();
   }).on('init'),
 
   /**
-   * Called when either the resource, the property, or the value of
-   * the property in the resource, is changed.
+   * Called when either the model, the property, or the value of
+   * the property in the model, is changed.
    */
-  updateResourceValue: function(){
-    const value = this.get(`resource.${this.get('p')}`);
+  updatePropertyValue: function(){
+    const value = this.get(`model.${this.get('prop')}`);
     this.set('value', value);
   },
 
@@ -46,13 +46,13 @@ export default Mixin.create({
   /**
    * Returns the used RDFa property.  Either by consuming the
    * supplied property argument, or by finding it from the
-   * resource's `p` key.
+   * model's `prop` key.
    */
-  rdfaProperty: computed( "property", "p", "resource", function() {
+  rdfaProperty: computed( "property", "prop", "model", function() {
     const property = this.get("property");
-    const p = this.get("p");
-    const resource = this.get("resource");
-    return property || get(resource, `rdfaBindings.${p}`);
+    const prop = this.get("prop");
+    const model = this.get("model");
+    return property || get(model, `rdfaBindings.${prop}`);
   }),
 
   /**

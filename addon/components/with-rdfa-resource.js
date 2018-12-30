@@ -8,6 +8,7 @@ export default Component.extend({
   // vocab :: specified on current element when set
   tagName: "div",
   attributeBindings: ["vocab", "maybeResource:resource", "typeof"],
+  positionalParams: ["resource"],
   maybeVocab: computed( "vocab", function() {
     const vocab = this.get('vocab');
     return vocab && `vocab="${vocab}"`;
