@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  name: '@lblod/ember-rdfa-helpers',
+  name: require('./package').name,
   isDevelopingAddon(){ return true; }
 };
