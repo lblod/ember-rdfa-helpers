@@ -1,0 +1,12 @@
+{{#if useUri}}
+  <a href={{uri}} property={{property}} typeof={{typeof}} {{action "transition" link-to value}}>
+    {{yield}}
+  </a>
+{{else}}
+  {{!-- TODO: There seems to be a bug in which the property and
+                typeof are not rendered by the link-to helper. We should
+                investigate and possibly build our own. --}}
+  <a href={{transitionUrl}} property={{property}} typeof={{typeof}} resource={{uri}} {{action "transition" link-to value}}>
+    {{yield}}
+  </a>
+{{/if}}

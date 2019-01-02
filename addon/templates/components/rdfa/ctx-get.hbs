@@ -1,4 +1,5 @@
-{{#let (hash
+{{#let
+   (hash
    get=(component "rdfa/ctx-get" model=value)
    each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
 
@@ -8,15 +9,9 @@
     {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
        should be handled automatically be introspecting the router.
        --}}
-    {{#if resourceAttr}}
-      {{#link-to link-to property=rdfaProperty resource=value.uri typeof=typeof}}
-        {{yield componentHash value}}
-      {{/link-to}}
-    {{else}}
-      {{#link-to link-to property=rdfaProperty typeof=typeof}}
-        {{yield componentHash value}}
-      {{/link-to}}
-    {{/if}}
+    {{#rdfa/link-to link-to=link-to value=value useUri=useUri property=rdfaProperty}}
+      {{yield componentHash value}}
+    {{/rdfa/link-to}}
   {{else}}
     {{#if isResource}}
       {{#if link}}

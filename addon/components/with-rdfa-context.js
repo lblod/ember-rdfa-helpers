@@ -9,7 +9,7 @@ export default Component.extend({
   // vocab :: specified on current element when set
   scope: true,
   tagName: "div",
-  attributeBindings: ["vocab", "maybeResource:resource", "prefix", "typeof"],
+  attributeBindings: ["vocab", "maybeResource:resource", "prefix", "typeof", "property"],
   positionalParams: ["model"],
   maybeVocab: computed( "vocab", function() {
     const vocab = this.get('vocab');
