@@ -1,5 +1,5 @@
 {
-  "name": "@lblod/ember-rdfa-helpers",
+  "name": "ember-rdfa-helpers",
   "version": "0.2.0",
   "description": "Helpers for outputting RDFa in EmberJS applications.",
   "keywords": [
