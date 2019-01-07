@@ -1,1 +1,1 @@
-export { default } from '@lblod/ember-rdfa-helpers/components/rdfa/link-to';
+export { default } from 'ember-rdfa-helpers/components/rdfa/link-to';

@@ -1,1 +1,1 @@
-export { default } from '@lblod/ember-rdfa-helpers/components/rdfa/ctx-each-as-link';
+export { default } from 'ember-rdfa-helpers/components/rdfa/ctx-each-as-link';
