@@ -1,24 +1,26 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('rdfa/ctx-src', 'Integration | Component | rdfa/ctx src', {
-  integration: true
-});
+module('Integration | Component | rdfa/ctx src', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  test('it renders', async function(assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{rdfa/ctx-src}}`);
+    await render(hbs`{{rdfa/ctx-src}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.dom('*').hasText('');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#rdfa/ctx-src}}
-      template block text
-    {{/rdfa/ctx-src}}
-  `);
+    // Template block usage:
+    await render(hbs`
+      {{#rdfa/ctx-src}}
+        template block text
+      {{/rdfa/ctx-src}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+  });
 });
