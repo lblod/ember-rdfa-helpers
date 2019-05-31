@@ -12,7 +12,7 @@ module('Integration | Component | rdfa/link-to', function(hooks) {
 
     await render(hbs`{{rdfa/link-to}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
+    assert.dom(this.element).hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +21,6 @@ module('Integration | Component | rdfa/link-to', function(hooks) {
       {{/rdfa/link-to}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 });

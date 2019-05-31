@@ -12,7 +12,7 @@ module('Integration | Component | rdfa/ctx each as link', function(hooks) {
 
     await render(hbs`{{rdfa/ctx-each-as-link}}`);
 
-    assert.equal(find('*').textContent.trim(), '');
+    assert.dom('*').hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +21,7 @@ module('Integration | Component | rdfa/ctx each as link', function(hooks) {
       {{/rdfa/ctx-each-as-link}}
     `);
 
-    assert.equal(find('*').textContent.trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+    
   });
 });

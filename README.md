@@ -107,7 +107,6 @@ Renders a has-many relationship as a link with correct semantics and yields a bl
 #### `ctx.link`
 
 Renders a link to a different resource.  Either because it links to a related object, or because the property contains a URL.
-
     {{#with-rdfa-resource resource=person as |ctx|}}
       {{#ctx.link p="profilePicture"}}my picture{{/ctx.link}}
     {{/with-rdfa-resource}}

@@ -12,7 +12,7 @@ module('Integration | Component | with rdfa resource', function(hooks) {
 
     await render(hbs`{{with-rdfa-resource}}`);
 
-    assert.equal(find('*').textContent.trim(), '');
+    assert.dom('*').hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +21,7 @@ module('Integration | Component | with rdfa resource', function(hooks) {
       {{/with-rdfa-resource}}
     `);
 
-    assert.equal(find('*').textContent.trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+    
   });
 });

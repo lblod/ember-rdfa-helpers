@@ -12,7 +12,7 @@ module('Integration | Component | rdfa/ctx prop', function(hooks) {
 
     await render(hbs`{{rdfa/ctx-prop}}`);
 
-    assert.equal(find('*').textContent.trim(), '');
+    assert.dom('*').hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +21,7 @@ module('Integration | Component | rdfa/ctx prop', function(hooks) {
       {{/rdfa/ctx-prop}}
     `);
 
-    assert.equal(find('*').textContent.trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+    
   });
 });
