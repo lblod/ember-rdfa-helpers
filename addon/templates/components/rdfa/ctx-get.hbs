@@ -38,13 +38,19 @@
         {{/if}}
       {{/if}}
     {{else}}
-      {{!-- We want to relate to a property --}}
+      {{!-- We want to relate to a literal --}}
       {{#if (has-block)}}
-        <div property={{rdfaProperty}} content={{value}}>
-          {{yield value}}
-        </div>
+        {{#if block}}
+          <div property={{rdfaProperty}} content={{rdfaContent}} datatype={{rdfaDatatype}}>
+            {{yield value}}
+          </div>
+        {{else}}
+          <span property={{rdfaProperty}} content={{rdfaContent}} datatype={{rdfaDatatype}}>
+            {{yield value}}
+          </span>
+        {{/if}}
       {{else}}
-        <span property={{rdfaProperty}}>{{value}}</span>
+        <span property={{rdfaProperty}} datatype={{rdfaDatatype}}>{{value}}</span>
       {{/if}}
     {{/if}}
   {{/if}}
