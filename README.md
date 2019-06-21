@@ -7,7 +7,6 @@ Provides helpers for adding RDFa in Ember apps.  The predicates are obtained fro
 Useage consists of two portions.  One one side, the correct metamodel needs to be configured on the model for which RDFa will be offered.  For rendering the contents, contextual components need to be injected into the templates.
 
 ### metamodel
-
 The metamodel is subject to change.  As it stands, it is a simple key-value mapping for each of the possible properties.  A special `class` property is added to indicate the type of the resource.
 
 It is assumed that each object contains a `uri` property which stores the URI of the specific resource.  An example for a foaf user could look like this.
@@ -36,7 +35,6 @@ The component helpers have evolved between versions.  The library currently supp
 The new version is described by `with-rdfa-context`, `ctx.get` and `ctx.each`. Both syntaxes cannot be mixed.
 
 #### `with-rdfa-context`
-
 Sets up a new RDFa context.  This is equivalent to the old `with-rdfa-resource`.
 
 This component takes the following arguments:
