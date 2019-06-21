@@ -17,37 +17,78 @@ It is assumed that each object contains a `uri` property which stores the URI of
       firstName: DS.attr(),
       lastName: DS.attr(),
       profilePicture: DS.attr(),
+      currentProject: DS.belongsTo('project'),
       accounts: DS.hasMany('account'),
 
-      rdfaBindings: {
+      rdfaBindings: Object.freeze({
         class: "http://schema.org/Person",
         firstName: "http://schema.org/givenName",
         lastName: "http://schema.org/familyName",
         profilePicture: "http://schema.org/image",
+        currentProject: "foaf:currentProject",
         accounts: "foaf:holdsAccount"
-      }
+      })
     });
 
-
-### component helpers
-
+### component helpers (>= v0.2.0)
 The component helpers have evolved between versions.  The library currently supports a modernized and an older syntactic version.
 
-The new version is described by `with-rdfa-context`, `ctx.get` and `ctx.each`.  All other keys describe the new syntax.  Both syntaxes cannot be mixed.
-
-In order to use the helpers, the first object's scope needs to be defined.  This is done by use of the `with-rdfa-resource` component.  Other components can be used by depending on the context object retrieved from this component.
+The new version is described by `with-rdfa-context`, `ctx.get` and `ctx.each`. Both syntaxes cannot be mixed.
 
 #### `with-rdfa-context`
 
-Sets up a new RDFa context.  This is equivalent to `with-rdfa-resource`.
+Sets up a new RDFa context.  This is equivalent to the old `with-rdfa-resource`.
+
+This component takes the following arguments:
+  - _required_ `model`: object for which the context will be set up.
+  - _optional_ `vocab`: Vocabulary to be used by default (for future use).
+
+It returns the following:
+  - `ctx`: Context on which nested components are defined (see below).
+
+Example:
+
+    {{#with-rdfa-context model=person vocab="http://schema.org" as |ctx|}}
+        ...
+    {{/with-rdfa-context}}
+
 
 #### `ctx.get`
 
-Gets a property from the resource and applies the right bindings.
+Gets a property/relation from the context and applies the right bindings.
 
 The following can be supplied to `ctx.get`:
-- A block which receives a contextual object for fetching content and the property's value as its second argument.
-- `link=true` creates a link to the related resource.
+  - _required_ `prop`: name of the JavaScript property of context which will be rendered.
+  - _optional_ `property`: override the property with a different semantic property.
+  - _optional_ `block=false`: override whether the property must be displayed as a block (`div` tag) or inline (`span` tag)
+
+The following properties can be supplied in case of a literal value:
+
+The following properties can be supplied in case of a relation:
+  - _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute.
+  - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
+
+The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
+
+Examples:
+
+    {{#with-rdfa-context model=person as |ctx|}}
+        {{ctx.get prop="name"}}
+    {{/with-rdfa-context}}
+
+
+    {{#with-rdfa-context model=person as |ctx|}}
+        {{#ctx.get prop="currentProject" as |pCtx|}}
+            {{pCtx.get prop="name"}}
+        {{/ctx.get}}
+    {{/with-rdfa-context}}
+
+
+    {{#with-rdfa-context model=person as |ctx|}}
+        {{#ctx.get prop="currentProject" link-to="projects.show"}}
+            Project
+        {{/ctx.get}}
+    {{/with-rdfa-context}}
 
 #### `ctx.each`
 
@@ -56,6 +97,9 @@ Allows looping over a relationship.
 The following can be supplied to `ctx.each`:
 - A block which receives a contextual object for fetching content and the property's value as its second argument.
 - `link=true` creates a link to the related resource.
+
+### component helpers (v0.1.x)
+In order to use the helpers, the first object's scope needs to be defined.  This is done by use of the `with-rdfa-resource` component.  Other components can be used by depending on the context object retrieved from this component.
 
 #### `with-rdfa-resource`
 
