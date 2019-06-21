@@ -1,5 +1,4 @@
 import { get } from '@ember/object';
-import { oneWay } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/rdfa/ctx-get';

@@ -1,5 +1,4 @@
 import { oneWay } from '@ember/object/computed';
-import { get } from '@ember/object';
 import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import Component from '@ember/component';
@@ -16,7 +15,6 @@ export default Component.extend({
   uri: oneWay("value.uri"),
 
   transitionUrl: computed('router', 'link-to', 'value.id', function() {
-    const linkTo = this.get('link-to');
     const id = this.get('value.id');
     try {
       return this.router.urlFor( this.get('link-to'), id );
