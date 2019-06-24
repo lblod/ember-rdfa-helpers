@@ -1,14 +1,14 @@
 {{#let
-   (hash
-   get=(component "rdfa/ctx-get" model=value)
-   each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
+     (hash
+     get=(component "rdfa/ctx-get" model=value)
+     each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
 
   {{#if link-to}}
     {{!-- We want to link to a related resource with an ID matching
-       our own route. --}}
+         our own route. --}}
     {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
-       should be handled automatically be introspecting the router.
-       --}}
+         should be handled automatically be introspecting the router.
+         --}}
     {{#rdfa/link-to link-to=link-to value=value useUri=useUri property=rdfaProperty}}
       {{yield componentHash value}}
     {{/rdfa/link-to}}
@@ -25,32 +25,19 @@
         </a>
       {{else}}
         {{!-- We want to create a new scope for the resource --}}
-        {{#if (has-block)}}
-          {{!-- we assume divs for blocks and spans for values --}}
-          <div property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}>
-            {{yield componentHash value}}
-          </div>
-        {{else}}
-          {{!-- We can only share the related info as a span with no
-          contents as we have no standardised way of rendering
-          objects. --}}
-          <span property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}></span>
-        {{/if}}
+        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty resource=value.uri typeof=typeof}}
+          {{yield componentHash value}}
+        {{/rdfa/rdfa-node}}
       {{/if}}
     {{else}}
-      {{!-- We want to relate to a literal --}}
       {{#if (has-block)}}
-        {{#if block}}
-          <div property={{rdfaProperty}} content={{rdfaContent}} datatype={{rdfaDatatype}}>
-            {{yield value}}
-          </div>
-        {{else}}
-          <span property={{rdfaProperty}} content={{rdfaContent}} datatype={{rdfaDatatype}}>
-            {{yield value}}
-          </span>
-        {{/if}}
+        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty content=rdfaContent datatype=rdfaDatatype}}
+          {{yield value}}
+        {{/rdfa/rdfa-node}}
       {{else}}
-        <span property={{rdfaProperty}} datatype={{rdfaDatatype}}>{{value}}</span>
+        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty datatype=rdfaDatatype}}
+          {{value}}
+        {{/rdfa/rdfa-node}}
       {{/if}}
     {{/if}}
   {{/if}}
