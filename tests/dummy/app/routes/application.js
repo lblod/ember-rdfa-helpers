@@ -4,7 +4,14 @@ export default Route.extend({
   model() {
     const projectX = this.store.createRecord('project', {
       uri: 'http://data.semte.ch/projects/1',
-      name: 'Project X'
+      name: 'Project X',
+      code: 'X'
+    });
+
+    const projectY = this.store.createRecord('project', {
+      uri: 'http://data.semte.ch/projects/2',
+      name: 'Project Y',
+      code: 'Y'
     });
 
     const github = this.store.createRecord('account', {
@@ -47,6 +54,9 @@ export default Route.extend({
     projectX.get('funders').pushObject(richie);
     projectX.get('funders').pushObject(tim);
 
-    return person;
+    return {
+      person,
+      projects: [ projectX, projectY ]
+    };
   }
 });

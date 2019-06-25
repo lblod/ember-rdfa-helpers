@@ -4,14 +4,9 @@
      img=(component "rdfa/ctx-img" model=model)
      each=(component "rdfa/ctx-each" model=value)) as |componentHash|}}
 
-  {{#if link-to}} {{!-- We want to link to a related resource using an Ember route --}}
-    {{!-- We want to link to a related resource with an ID matching
-         our own route. --}}
-    {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
-         should be handled automatically be introspecting the router.
-         --}}
-    {{#rdfa/link-to link-to=link-to value=value useUri=useUri property=rdfaProperty}}
-      {{yield componentHash value}}
+  {{#if isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
+    {{#rdfa/link-to link-to=link-to href-to=href-to value=value useUri=useUri property=rdfaProperty}}
+      {{yield value componentHash}}
     {{/rdfa/link-to}}
   {{else}}
     {{#if isResource}}

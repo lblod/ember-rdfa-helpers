@@ -6,7 +6,7 @@ Provides helpers for adding RDFa in Ember apps.  The predicates are obtained fro
 
 Useage consists of two portions.  One one side, the correct metamodel needs to be configured on the model for which RDFa will be offered.  For rendering the contents, contextual components need to be injected into the templates.
 
-### metamodel
+### Metamodel
 The metamodel is subject to change.  As it stands, it is a simple key-value mapping for each of the possible properties.  A special `class` property is added to indicate the type of the resource.
 
 It is assumed that each object contains a `uri` property which stores the URI of the specific resource.  An example for a foaf user could look like this.
@@ -26,6 +26,22 @@ It is assumed that each object contains a `uri` property which stores the URI of
         profilePicture: "http://schema.org/image",
         currentProject: "foaf:currentProject",
         accounts: "foaf:holdsAccount"
+      })
+    });
+
+For properties that must be annotated with a datatype and/or special content formatting, an object containing a `property`, `datatype` and `content` key can be passed in the mapping. The content of properties defined with datatype `xsd:date` or `xsd:dateTime` will be automatically formatted according to the ISO8601 standard.
+
+E.g.
+
+    export deault DS.Model.extend({
+      uri: DS.attr(),
+      created: DS.attr(),
+      
+      rdfaBindings: Object.freeze({
+        created: {
+          property: 'dc:created',
+          datatype: 'xsd:dateTime'
+        }
       })
     });
 
