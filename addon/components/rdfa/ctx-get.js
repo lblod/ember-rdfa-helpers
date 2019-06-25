@@ -1,16 +1,12 @@
-import { get } from '@ember/object';
-import { computed } from '@ember/object';
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 import layout from '../../templates/components/rdfa/ctx-get';
 import StandardRdfaComponent from '../../mixins/rdfa/standard';
+import isRdfaResource from '../../utils/is-rdfa-resource';
 
 export default Component.extend( StandardRdfaComponent, {
   layout,
   tagName: '',
-  innerTagName: 'div',
   link: false, // Can be supplied to force an href
-  positionalParams: ["prop"],
-  isResource: computed('value', function(){
-    return (typeof get(this, 'value')) === "object" && !(get(this, 'value') instanceof Date);
-  })
+  isResource: computed('value', function() { return isRdfaResource(this.value); })
 });

@@ -3,22 +3,22 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | rdfa/rdfa-node', function(hooks) {
+module('Integration | Component | rdfa/ctx-img', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{rdfa/rdfa-node}}`);
+    await render(hbs`{{rdfa/ctx-img}}`);
 
     assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#rdfa/rdfa-node}}
+      {{#rdfa/ctx-img}}
         template block text
-      {{/rdfa/rdfa-node}}
+      {{/rdfa/ctx-img}}
     `);
 
     assert.equal(this.element.textContent.trim(), 'template block text');

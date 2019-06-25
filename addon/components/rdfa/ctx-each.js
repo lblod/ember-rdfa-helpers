@@ -5,6 +5,5 @@ import StandardRdfaComponent from '../../mixins/rdfa/standard';
 export default Component.extend( StandardRdfaComponent, {
   layout,
   tagName: '',
-  link: false, // can be supplied to force an href
-  positionalParams: ["prop"],
+  link: false // can be supplied to force an href
 });

@@ -1,9 +1,10 @@
 {{#let
      (hash
      get=(component "rdfa/ctx-get" model=value)
-     each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
+     img=(component "rdfa/ctx-img" model=model)
+     each=(component "rdfa/ctx-each" model=value)) as |componentHash|}}
 
-  {{#if link-to}}
+  {{#if link-to}} {{!-- We want to link to a related resource using an Ember route --}}
     {{!-- We want to link to a related resource with an ID matching
          our own route. --}}
     {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
@@ -16,28 +17,33 @@
     {{#if isResource}}
       {{#if link}}
         {{!-- We want to link to a related resource using its URI --}}
-        <a property={{rdfaProperty}} href={{value.uri}} typeof={{typeof}}>
-          {{#if (has-block)}}
-            {{yield componentHash value}}
-          {{else}}
-            {{value}}
-          {{/if}}
-        </a>
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty href=value.uri typeof=typeof) value componentHash}}
+        {{else}}
+          <a {{rdfa (hash property=rdfaProperty href=value.uri typeof=typeof)}}>{{value.uri}}</a>
+        {{/if}}
       {{else}}
         {{!-- We want to create a new scope for the resource --}}
-        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty resource=value.uri typeof=typeof}}
-          {{yield componentHash value}}
-        {{/rdfa/rdfa-node}}
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty resource=value.uri typeof=typeof) value componentHash}}
+        {{else}}
+          <span {{rdfa (hash property=rdfaProperty resource=value.uri typeof=typeof)}}>{{value.uri}}</span>
+        {{/if}}
       {{/if}}
     {{else}}
-      {{#if (has-block)}}
-        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty content=rdfaContent datatype=rdfaDatatype}}
-          {{yield value}}
-        {{/rdfa/rdfa-node}}
+      {{!-- Value is a literal --}}
+      {{#if link}}
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty href=value)}}
+        {{else}}
+          <a {{rdfa (hash property=rdfaProperty href=value)}}>{{value}}</a>
+        {{/if}}
       {{else}}
-        {{#rdfa/rdfa-node tagName=innerTagName property=rdfaProperty datatype=rdfaDatatype}}
-          {{value}}
-        {{/rdfa/rdfa-node}}
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty datatype=datataype content=content) value}}
+        {{else}}
+          <span {{rdfa (hash property=rdfaProperty datatype=datataype content=content)}}>{{value}}</span>
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}
