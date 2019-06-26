@@ -238,7 +238,7 @@ Example:
 
 
 ### `rdfa/link-to`
-Creates an annotated link in th app.
+Creates an annotated link in the app.
 
 The component takes the following arguments:
   - _required_ `value`: resource to link to
