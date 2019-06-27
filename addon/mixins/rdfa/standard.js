@@ -7,6 +7,8 @@ const defaultContentFns = function(datatype) {
     return (value) => value && value.toISOString && value.toISOString();
   else if (datatype == 'xsd:date' || datatype == 'http://www.w3.org/2001/XMLSchema#date')
     return (value) => value && value.toISOString && value.toISOString().substring(0, 10);
+  else if (datatype == 'xsd:boolean' || datatype == 'http://www.w3.org/2001/XMLSchema#boolean')
+    return (value) => value ? "true" : "false";
   else
     return null;
 };
@@ -70,7 +72,8 @@ export default Mixin.create({
    * model's `prop` key.
    */
   rdfaProperty: computed( "property", "prop", "normalizedRdfaBindings", function() {
-    return this.property || `${this.normalizedRdfaBindings[this.prop].property}`;
+    return this.property
+      || (this.normalizedRdfaBindings[this.prop] && `${this.normalizedRdfaBindings[this.prop].property}`);
   }),
 
   /**
@@ -89,13 +92,15 @@ export default Mixin.create({
    * model's `prop` key.
    */
   rdfaDatatype: computed( "datatype", "prop", "normalizedRdfaBindings", function() {
-    return this.datatype || this.normalizedRdfaBindings[this.prop].datatype;
+    return this.datatype ||
+      (this.normalizedRdfaBindings[this.prop] && this.normalizedRdfaBindings[this.prop].datatype);
   }),
 
   /**
    * Returns the content of a value my applying the 'content' function if provided
    */
   rdfaContent: computed( "value", "prop", "normalizedRdfaBindings", function() {
-    return this.normalizedRdfaBindings[this.prop].content && this.normalizedRdfaBindings[this.prop].content(this.value);
+    return this.normalizedRdfaBindings[this.prop] && this.normalizedRdfaBindings[this.prop].content
+      && this.normalizedRdfaBindings[this.prop].content(this.value);
   })
 });

@@ -35,9 +35,9 @@
         {{/if}}
       {{else}}
         {{#if (has-block)}}
-          {{yield (hash property=rdfaProperty datatype=datataype content=content) value}}
+          {{yield (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent) value}}
         {{else}}
-          <span {{rdfa (hash property=rdfaProperty datatype=datataype content=content)}}>{{value}}</span>
+          <span {{rdfa (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent)}}>{{value}}</span>
         {{/if}}
       {{/if}}
     {{/if}}

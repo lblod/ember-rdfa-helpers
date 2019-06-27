@@ -31,9 +31,9 @@
           {{/if}}
         {{else}}
           {{#if (has-block)}}
-            {{yield (hash property=rdfaProperty datatype=datataype content=content) newModel}}
+            {{yield (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent) newModel index}}
           {{else}}
-            <span {{rdfa (hash property=rdfaProperty datatype=datataype content=content)}}>{{newModel}}</span>
+            <span {{rdfa (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent)}}>{{newModel}}</span>
           {{/if}}
         {{/if}}
       {{/if}}
