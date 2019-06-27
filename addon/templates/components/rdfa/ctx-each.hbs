@@ -1,23 +1,23 @@
-{{#each value as |newModel|}}
+{{#each value as |newModel index|}}
   {{#let (hash
        get=(component "rdfa/ctx-get" model=newModel)
        img=(component "rdfa/ctx-img" model=newModel)
        each=(component "rdfa/ctx-each" model=newModel)) as |componentHash|}}
     {{#if isInAppLink}}
       {{#rdfa/link-to link-to=link-to href-to=href-to value=newModel useUri=useUri property=rdfaProperty}}
-        {{yield newModel componentHash}}
+        {{yield newModel componentHash index}}
       {{/rdfa/link-to}}
     {{else}}
       {{#if (is-rdfa-resource newModel)}}
         {{#if link}}
           {{#if (has-block)}}
-            {{yield (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash}}
+            {{yield (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
           {{else}}
             <a {{rdfa (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
-            {{yield (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash}}
+            {{yield (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
           {{else}}
             <span {{rdfa (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</span>
           {{/if}}
@@ -25,7 +25,7 @@
       {{else}}
         {{#if link}}
           {{#if (has-block)}}
-            {{yield (hash property=rdfaProperty href=newModel)}}
+            {{yield (hash property=rdfaProperty href=newModel) index}}
           {{else}}
             <a {{rdfa (hash property=rdfaProperty href=newModel)}}>{{newModel}}</a>
           {{/if}}

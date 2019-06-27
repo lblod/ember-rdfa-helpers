@@ -199,6 +199,7 @@ The block format receives the following params:
 - `attrs`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
+- `index`: index of the value in the array
 
 The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `attrs` param is not applied on a node, the content will not be annotated.
 
