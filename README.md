@@ -377,3 +377,7 @@ If new forms of output should be supported, a new component should be made in th
 * `git clone <repository-url>` this repository
 * `cd ember-rdfa-helpers`
 * `npm install`
+
+### Wishlist
+* Support for inverse relations as RDFa
+* Support for computed/composable values (e.g. sorted hasMany relation)
