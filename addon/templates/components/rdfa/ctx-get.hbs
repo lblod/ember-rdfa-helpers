@@ -1,50 +1,44 @@
 {{#let
-   (hash
-   get=(component "rdfa/ctx-get" model=value)
-   each=(component "rdf/ctx-each" model=value)) as |componentHash|}}
+     (hash
+     get=(component "rdfa/ctx-get" model=value)
+     img=(component "rdfa/ctx-img" model=model)
+     each=(component "rdfa/ctx-each" model=value)) as |componentHash|}}
 
-  {{#if link-to}}
-    {{!-- We want to link to a related resource with an ID matching
-       our own route. --}}
-    {{!-- TODO: Perhaps this should become ctx.link-to or perhaps it
-       should be handled automatically be introspecting the router.
-       --}}
-    {{#rdfa/link-to link-to=link-to value=value useUri=useUri property=rdfaProperty}}
-      {{yield componentHash value}}
+  {{#if isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
+    {{#rdfa/link-to link-to=link-to href-to=href-to value=value useUri=useUri property=rdfaProperty}}
+      {{yield value componentHash}}
     {{/rdfa/link-to}}
   {{else}}
     {{#if isResource}}
       {{#if link}}
         {{!-- We want to link to a related resource using its URI --}}
-        <a property={{rdfaProperty}} href={{value.uri}} typeof={{typeof}}>
-          {{#if (has-block)}}
-            {{yield componentHash value}}
-          {{else}}
-            {{value}}
-          {{/if}}
-        </a>
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty href=value.uri typeof=typeof) value componentHash}}
+        {{else}}
+          <a {{rdfa (hash property=rdfaProperty href=value.uri typeof=typeof)}}>{{value.uri}}</a>
+        {{/if}}
       {{else}}
         {{!-- We want to create a new scope for the resource --}}
         {{#if (has-block)}}
-          {{!-- we assume divs for blocks and spans for values --}}
-          <div property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}>
-            {{yield componentHash value}}
-          </div>
+          {{yield (hash property=rdfaProperty resource=value.uri typeof=typeof) value componentHash}}
         {{else}}
-          {{!-- We can only share the related info as a span with no
-          contents as we have no standardised way of rendering
-          objects. --}}
-          <span property={{rdfaProperty}} resource={{value.uri}} typeof={{typeof}}></span>
+          <span {{rdfa (hash property=rdfaProperty resource=value.uri typeof=typeof)}}>{{value.uri}}</span>
         {{/if}}
       {{/if}}
     {{else}}
-      {{!-- We want to relate to a property --}}
-      {{#if (has-block)}}
-        <div property={{rdfaProperty}} content={{value}}>
-          {{yield value}}
-        </div>
+      {{!-- Value is a literal --}}
+      {{#if link}}
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty href=value)}}
+        {{else}}
+          <a {{rdfa (hash property=rdfaProperty href=value)}}>{{value}}</a>
+        {{/if}}
       {{else}}
-        <span property={{rdfaProperty}}>{{value}}</span>
+        {{#if (has-block)}}
+          {{yield (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent) value}}
+        {{else}}
+          <span {{rdfa (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent)}}>{{value}}</span>
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}

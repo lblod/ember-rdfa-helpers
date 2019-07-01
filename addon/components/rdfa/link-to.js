@@ -1,32 +1,29 @@
 import { oneWay } from '@ember/object/computed';
-import { get } from '@ember/object';
 import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import Component from '@ember/component';
 import layout from '../../templates/components/rdfa/link-to';
+import { hrefTo } from 'ember-href-to/helpers/href-to';
 
 export default Component.extend({
   layout,
   tagName: '',
   router: inject(),
 
-  positionalParams: ["link-to", "value"],
+  useUri: false,
 
   typeof: oneWay("value.rdfaBindings.class"),
   uri: oneWay("value.uri"),
-
-  transitionUrl: computed('router', 'link-to', 'value.id', function() {
-    const linkTo = this.get('link-to');
-    const id = this.get('value.id');
-    try {
-      return this.router.urlFor( this.get('link-to'), id );
-    } catch(e) {
-      return null;
-    }
+  url: computed('link-to', 'value', 'href-to', function() {
+    if (this.get('href-to'))
+      return this.get('href-to');
+    else
+      return hrefTo(this, [this.get('link-to'), this.value.get('id')]);
   }),
+
   actions: {
-    transition(route, argument) {
-      this.router.transitionTo(route, argument);
+    transition() {
+      this.router.transitionTo(this.url);
     }
   }
 });

@@ -1,20 +1,41 @@
-{{#each value as |newModel|}}
+{{#each value as |newModel index|}}
   {{#let (hash
-     get=(component "rdfa/ctx-get" model=newModel)
-     each=(component "rdf/ctx-each" model=newModel)) as |componentHash|}}
-    {{#if link-to}}
-      {{#rdfa/link-to link-to=link-to value=newModel useUri=useUri property=rdfaProperty}}
-        {{yield componentHash newModel}}
+       get=(component "rdfa/ctx-get" model=newModel)
+       img=(component "rdfa/ctx-img" model=newModel)
+       each=(component "rdfa/ctx-each" model=newModel)) as |componentHash|}}
+    {{#if isInAppLink}}
+      {{#rdfa/link-to link-to=link-to href-to=href-to value=newModel useUri=useUri property=rdfaProperty}}
+        {{yield newModel componentHash index}}
       {{/rdfa/link-to}}
     {{else}}
-      {{#if link}}
-        <a href={{newModel.uri}} property={{rdfaProperty}} style={{style}} typeof={{newModel.rdfaBindings.class}}>
-          {{yield componentHash newModel}}
-        </a>
+      {{#if (is-rdfa-resource newModel)}}
+        {{#if link}}
+          {{#if (has-block)}}
+            {{yield (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
+          {{else}}
+            <a {{rdfa (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</a>
+          {{/if}}
+        {{else}}
+          {{#if (has-block)}}
+            {{yield (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
+          {{else}}
+            <span {{rdfa (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</span>
+          {{/if}}
+        {{/if}}
       {{else}}
-        <div property={{rdfaProperty}} style={{style}} resource={{newModel.uri}} typeof={{newModel.rdfaBindings.class}}>
-          {{yield componentHash newModel}}
-        </div>
+        {{#if link}}
+          {{#if (has-block)}}
+            {{yield (hash property=rdfaProperty href=newModel) index}}
+          {{else}}
+            <a {{rdfa (hash property=rdfaProperty href=newModel)}}>{{newModel}}</a>
+          {{/if}}
+        {{else}}
+          {{#if (has-block)}}
+            {{yield (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent) newModel index}}
+          {{else}}
+            <span {{rdfa (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent)}}>{{newModel}}</span>
+          {{/if}}
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/let}}
