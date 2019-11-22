@@ -3,7 +3,6 @@
      get=(component "rdfa/ctx-get" model=value)
      img=(component "rdfa/ctx-img" model=model)
      each=(component "rdfa/ctx-each" model=value)) as |componentHash|}}
-
   {{#if isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
     {{#rdfa/link-to link-to=link-to href-to=href-to value=value useUri=useUri property=rdfaProperty}}
       {{yield value componentHash}}

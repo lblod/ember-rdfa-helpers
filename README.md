@@ -109,41 +109,41 @@ Examples:
 
 ##### Block format
 The block format receives the following params:
-- `attrs`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
+- `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `attrs` param is not applied on a node, the content will not be annotated.
+The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
     {{#with-rdfa-context model=person as |ctx|}}
-        {{#ctx.get prop="name" as |attrs value|}}
-            <div {{rdfa attrs}} class="some-custom-css-class">{{value}}</div>
+        {{#ctx.get prop="name" as |elements value|}}
+            <div {{rdfa elements}} class="some-custom-css-class">{{value}}</div>
         {{/ctx.get}}
     {{/with-rdfa-context}}
 
 
     {{#with-rdfa-context model=person as |ctx|}}
-        {{#ctx.get prop="birthDate" as |attrs value|}}
-            <span {{rdfa attrs}}>{{format-date value}}</span>
+        {{#ctx.get prop="birthDate" as |elements value|}}
+            <span {{rdfa elements}}>{{format-date value}}</span>
         {{/ctx.get}}
     {{/with-rdfa-context}}
 
 
     {{#with-rdfa-context model=person as |ctx|}}
-        {{#ctx.get prop="homepage" link=true as |attrs|}}
-           <a {{rdfa attrs}}>my homepage</a>
+        {{#ctx.get prop="homepage" link=true as |elements|}}
+           <a {{rdfa elements}}>my homepage</a>
         {{/ctx.get}}
     {{/with-rdfa-context}}
 
 
     {{#with-rdfa-context model=person as |ctx|}}
-        {{#ctx.get prop="currentProject" as |attrs value projectCtx|}}
-            <div {{rdfa attrs}}>
+        {{#ctx.get prop="currentProject" as |elements value projectCtx|}}
+            <div {{rdfa elements}}>
                 {{projectCtx.get prop="name"}}
-                {{#projectCtx.get prop="budget" as |attrs value|}}
-                    <span {{rdfa attrs}}>{{format-amount budget}}</span>
+                {{#projectCtx.get prop="budget" as |elements value|}}
+                    <span {{rdfa elements}}>{{format-amount budget}}</span>
                 {{/projectCtx.get}}
             </div>
         {{/ctx.get}}
@@ -164,6 +164,10 @@ Examples:
             {{value.name}}
         {{/ctx.get}}
     {{/with-rdfa-context}}
+
+Warning: Even though the `elements` property can be renamed by the user, when using
+`ctx.get` in its angle brackets form, don't replace it by `attrs`.
+This keyword is already used by the core code of components in Ember Octane.
 
 #### `ctx.each`
 
@@ -196,26 +200,26 @@ Example:
 
 ##### Block format
 The block format receives the following params:
-- `attrs`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
+- `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 - `index`: index of the value in the array
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `attrs` param is not applied on a node, the content will not be annotated.
+The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
     {{#with-rdfa-context tagName='ul' model=project as |ctx|}}
-        {{#ctx.each prop="funders" link=true as |attrs funder|}}
-            <li><a {{rdfa attrs}}>{{funder.firstName}} {{funder.lastName}}</a></li>
+        {{#ctx.each prop="funders" link=true as |elements funder|}}
+            <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
         {{/ctx.each}}
     {{/with-rdfa-context}}
 
 
     {{#with-rdfa-context tagName='ul' model=person as |ctx|}}
         <ul>
-            {{#ctx.each prop="accounts" as |attrs account accountCtx|}}
-                <li {{rdfa attrs}}>
+            {{#ctx.each prop="accounts" as |elements account accountCtx|}}
+                <li {{rdfa elements}}>
                   {{accountCtx.get prop="accountServiceHomepage" link=true}}
                 </li>
             {{/ctx.each}}
