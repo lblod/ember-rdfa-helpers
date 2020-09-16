@@ -1,4 +1,4 @@
-import { Modifier } from 'ember-oo-modifiers';
+import Modifier from 'ember-modifier';
 
 const rdfaKeywords = [
   'resource',
@@ -14,13 +14,21 @@ const rdfaKeywords = [
   'prefix'
 ];
 
-const RdfaModifier = Modifier.extend({
-  didReceiveArguments( [rdfaAttributes] ) {
+export default class RdfaModifier extends Modifier {
+
+  constructor(){
+    super(...arguments)
+  }
+
+  get rdfaAttributes(){
+    return this.args.positional[0]
+  }
+
+  didReceiveArguments(e) {
     for (let key of rdfaKeywords) {
-      if (rdfaAttributes[key])
-        this.element.setAttribute(key, rdfaAttributes[key]);
+      if (this.rdfaAttributes[key])
+        this.element.setAttribute(key, this.rdfaAttributes[key]);
     }
   }
-});
 
-export default Modifier.modifier(RdfaModifier);
+}
