@@ -24,7 +24,7 @@
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^3.0.1",
     "ember-href-to": "^3.1.0",
-    "ember-oo-modifiers": "^0.3.0"
+    "ember-modifier": "^2.1.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
