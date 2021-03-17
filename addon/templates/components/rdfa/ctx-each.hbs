@@ -13,13 +13,13 @@
           {{#if (has-block)}}
             {{yield (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
           {{else}}
-            <a {{rdfa (hash property=rdfaProperty href=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</a>
+            <a property={{this.rdfaProperty}} href={{newModel.uri}} typeof={{newModel.rdfaBindings.class}}>{{newModel.uri}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
             {{yield (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class) newModel componentHash index}}
           {{else}}
-            <span {{rdfa (hash property=rdfaProperty resource=newModel.uri typeof=newModel.rdfaBindings.class)}}>{{newModel.uri}}</span>
+            <span property={{this.rdfaProperty}} resource={{newModel.uri}} typeof={{newModel.rdfaBindings.class}}>{{newModel.uri}}</span>
           {{/if}}
         {{/if}}
       {{else}}
@@ -27,13 +27,13 @@
           {{#if (has-block)}}
             {{yield (hash property=rdfaProperty href=newModel) index}}
           {{else}}
-            <a {{rdfa (hash property=rdfaProperty href=newModel)}}>{{newModel}}</a>
+            <a property={{this.rdfaProperty}} href={{newModel}}>{{newModel}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
             {{yield (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent) newModel index}}
           {{else}}
-            <span {{rdfa (hash property=rdfaProperty datatype=rdfaDatatype content=rdfaContent)}}>{{newModel}}</span>
+            <span property={{this.rdfaProperty}} datatype={{this.rdfaDatatype}} content={{this.rdfaContent}}>{{newModel}}</span>
           {{/if}}
         {{/if}}
       {{/if}}
