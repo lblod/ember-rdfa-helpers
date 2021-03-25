@@ -7,20 +7,44 @@ module('Integration | Component | rdfa/link-to', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+    const storeService = this.owner.lookup('service:store');
 
-    await render(hbs`{{rdfa/link-to}}`);
+    let project = storeService.createRecord('project', {
+      uri: 'https://github.com/lblod/ember-rdfa-helpers',
+      name: 'ember-rdfa-helpers',
+      id: "1234"
+    });
 
-    assert.dom(this.element).hasText('');
+    this.set('project', project);
 
-    // Template block usage:
     await render(hbs`
-      {{#rdfa/link-to}}
-        template block text
-      {{/rdfa/link-to}}
+      <Rdfa::LinkTo
+        @value={{this.project}}
+        @useUri={{true}}
+      >
+        useUri
+      </Rdfa::LinkTo>
+
+      {{!-- TODO
+        <Rdfa::LinkTo
+          @value={{this.project}}
+          @link-to="projects.show"
+        >
+          link-to
+        </Rdfa::LinkTo>
+
+        <Rdfa::LinkTo
+          @value={{this.project}}
+          @href-to={{href-to "projects.show" "1234"}}
+        >
+          href-to
+        </Rdfa::LinkTo>
+      --}}
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.dom('a')
+      .hasText('useUri')
+      .hasAttribute('href', 'https://github.com/lblod/ember-rdfa-helpers')
+      .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing')
   });
 });

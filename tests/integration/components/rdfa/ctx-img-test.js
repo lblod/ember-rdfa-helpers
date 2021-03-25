@@ -1,26 +1,45 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | rdfa/ctx-img', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  test('it annotates an img with the proper attributes', async function(assert) {
+    const storeService = this.owner.lookup('service:store');
 
-    await render(hbs`{{rdfa/ctx-img}}`);
+    let person = storeService.createRecord('person', {
+      uri: 'http://example.com/person/1234',
+      profilePicture: 'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png'
+    });
 
-    assert.equal(this.element.textContent.trim(), '');
+    this.set('person', person);
+    const NO_OVERRIDE = null;
+    this.set('propertyOverride', NO_OVERRIDE);
 
-    // Template block usage:
     await render(hbs`
-      {{#rdfa/ctx-img}}
-        template block text
-      {{/rdfa/ctx-img}}
+      <WithRdfaContext id="" @model={{this.person}} as |ctx|>
+        <ctx.img
+          @prop="profilePicture"
+          @alt="Profile pic"
+          @width={{100}}
+          @height={{100}}
+          @property={{this.propertyOverride}}
+        />
+      </WithRdfaContext>
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.dom('img')
+      .hasAttribute('src', 'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png')
+      .hasAttribute('property', 'http://schema.org/image')
+      .hasAttribute('width', "100")
+      .hasAttribute('height', "100")
+      .hasAttribute('alt', "Profile pic")
+
+    this.set('propertyOverride', 'https://some-other-vocabulary/image');
+    await settled();
+
+    assert.dom('img').hasAttribute('property', 'https://some-other-vocabulary/image');
   });
 });
