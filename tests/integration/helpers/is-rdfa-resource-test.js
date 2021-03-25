@@ -8,10 +8,20 @@ module('Integration | Helper | is-rdfa-resource', function(hooks) {
 
   // Replace this with your real tests.
   test('it renders', async function(assert) {
-    this.set('inputValue', '1234');
 
-    await render(hbs`{{is-rdfa-resource inputValue}}`);
+    this.set('literal', 'john');
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    await render(hbs`{{is-rdfa-resource this.literal}}`);
+    assert.dom(this.element).hasText('false');
+
+    const storeService = this.owner.lookup('service:store');
+    let person = storeService.createRecord('person', {
+      uri: 'http://example.com/person/1234',
+      profilePicture: 'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png'
+    });
+
+    this.set('resource', person);
+    await render(hbs`{{is-rdfa-resource this.resource}}`);
+    assert.dom(this.element).hasText('true');
   });
 });
