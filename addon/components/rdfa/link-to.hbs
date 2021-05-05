@@ -1,0 +1,10 @@
+<a
+  href={{if @useUri this.uri this.url}}
+  property={{this.property}}
+  typeof={{@value.rdfaBindings.class}}
+  resource={{if @useUri undefined this.uri}}
+  {{on "click" this.transition}}
+  ...attributes
+>
+  {{yield}}
+</a>
