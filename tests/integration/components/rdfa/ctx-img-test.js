@@ -30,8 +30,12 @@ module('Integration | Component | rdfa/ctx-img', function(hooks) {
       </WithRdfaContext>
     `);
 
-    assert.dom('img')
-      .hasAttribute('src', 'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png')
+    assert
+      .dom('img')
+      .hasAttribute(
+        'src',
+        'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png'
+      )
       .hasAttribute('property', 'http://schema.org/image')
       .hasAttribute('width', "100")
       .hasAttribute('height', "100")
