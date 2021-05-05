@@ -1,14 +1,7 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
-import { or } from '@ember/object/computed';
-import layout from '../../templates/components/rdfa/ctx-get';
-import StandardRdfaComponent from '../../mixins/rdfa/standard';
-import isRdfaResource from '../../utils/is-rdfa-resource';
+import Component from '@glimmer/component';
 
-export default Component.extend( StandardRdfaComponent, {
-  layout,
-  tagName: '',
-  link: false, // Can be supplied to force an href
-  isInAppLink: or('link-to', 'href-to'),
-  isResource: computed('value', function() { return isRdfaResource(this.value); })
-});
+export default class CtxGetComponent extends Component {
+  get isInAppLink() {
+    return Boolean(this.args['link-to'] || this.args['href-to']);
+  }
+}
