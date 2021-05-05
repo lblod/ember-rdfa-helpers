@@ -1,11 +1,7 @@
-import Component from '@ember/component';
-import layout from '../../templates/components/rdfa/ctx-each';
-import StandardRdfaComponent from '../../mixins/rdfa/standard';
-import { or } from '@ember/object/computed';
+import Component from '@glimmer/component';
 
-export default Component.extend( StandardRdfaComponent, {
-  layout,
-  tagName: '',
-  link: false, // can be supplied to force an href
-  isInAppLink: or('link-to', 'href-to')
-});
+export default class CtxEachComponent extends Component {
+  get isInAppLink() {
+    return Boolean(this.args['link-to'] || this.args['href-to']);
+  }
+}

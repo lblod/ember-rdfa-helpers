@@ -1,14 +1,15 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
+import Model, { attr } from '@ember-data/model';
 
-export default Model.extend({
-  uri: attr(),
-  accountName: attr(),
-  accountServiceHomepage: attr(),
+export default class AccountModel extends Model {
+  @attr uri;
+  @attr accountName;
+  @attr accountServiceHomepage;
 
-  rdfaBindings: Object.freeze({
-    class: 'http://xmlns.com/foaf/0.1/OnlineAccount',
-    accountName: 'http://xmlns.com/foaf/0.1/accountName',
-    accountServiceHomepage: 'http://xmlns.com/foaf/0.1/accountServiceHomepage'
-  })
-});
+  get rdfaBindings() {
+    return {
+      class: 'http://xmlns.com/foaf/0.1/OnlineAccount',
+      accountName: 'http://xmlns.com/foaf/0.1/accountName',
+      accountServiceHomepage: 'http://xmlns.com/foaf/0.1/accountServiceHomepage',
+    };
+  }
+}

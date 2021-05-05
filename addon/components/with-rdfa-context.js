@@ -1,15 +1,14 @@
-import { computed } from '@ember/object';
+/* eslint-disable ember/no-classic-components, ember/no-classic-classes, ember/require-tagless-components */
+// This component supports `tagName` as public api, so it might be better to keep it Classic component for now
 import Component from '@ember/component';
-import layout from '../templates/components/with-rdfa-context';
+import { computed } from '@ember/object';
+import { and } from '@ember/object/computed';
 
 export default Component.extend({
-  layout,
   scope: true,
   tagName: 'div',
   attributeBindings: ['vocab', 'resource', 'prefix', 'typeof', 'property'],
-  resource: computed('model.uri', 'scope', function(){
-    return this.scope && this.get('model.uri');
-  }),
+  resource: and('scope', 'model.uri'),
   typeof: computed('model.uri', function() {
     if( this.model && this.model.get('uri') )
       return this.model.get('rdfaBindings.class');

@@ -1,64 +1,66 @@
+{{! template-lint-disable link-href-attributes}}
 {{page-title "Ember RDFa helpers"}}
 
 <h2 id="title">Ember RDFa helpers</h2>
 
 <h3>Describe a person</h3>
 
-{{#with-rdfa-context model=model.person as |ctx|}}
-  <div>{{ctx.img prop="profilePicture" alt="Profile pic" width=100 height=100}}</div>
+<WithRdfaContext @model={{this.model.person}} as |ctx|>
+  <div><ctx.img @prop="profilePicture" alt="Profile pic" width={{100}} height={{100}} /></div>
   <div>
-    {{ctx.get prop="firstName"}} {{ctx.get prop="lastName"}}
+    <ctx.get @prop="firstName" /> <ctx.get @prop="lastName" />
     is born on
-    {{#ctx.get prop="birthDate" as |attrs value|}}
-      <span {{rdfa attrs}}>{{format-date value}}</span>
-    {{/ctx.get}}.
+    <ctx.get @prop="birthDate" as |attributes value|>
+      <span {{rdfa attributes}}>{{format-date value}}</span>
+    </ctx.get>
     For more info, have a look at
-    {{#ctx.get prop="homepage" link=true as |attrs|}}
-      <a {{rdfa attrs}}>his homepage</a>
-    {{/ctx.get}}
+    <ctx.get @prop="homepage" @link={{true}} as |attributes|>
+      <a {{rdfa attributes}}>his homepage</a>
+    </ctx.get>
   </div>
   <div>
     He's also known by nicknames:
-    {{ctx.each prop="nicknames"}}
+    <ctx.each @prop="nicknames" />
   </div>
   <div>
     Link to the project detail page of
-    {{#ctx.get prop="currentProject" href-to=(href-to "projects.show" model.person.currentProject.code) as |value|}}
+    <ctx.get @prop="currentProject" @href-to={{href-to "projects.show" this.model.person.currentProject.code}} as |value|>
       his current project: {{value.name}}
-    {{/ctx.get}}
+    </ctx.get>
   </div>
   <div>
     He's currently working on
-    {{#ctx.get prop="currentProject" as |attrs project projectCtx|}}
-      <span {{rdfa attrs}}>{{project.name}}</span>
+    <ctx.get @prop="currentProject" as |attributes project projectCtx|>
+      <span {{rdfa attributes}}>{{project.name}}</span>
       which is funded by:
       <ul>
-        {{#projectCtx.each prop="funders" link=true as |attrs funder|}}
-          <li><a {{rdfa attrs}}>{{funder.firstName}} {{funder.lastName}}</a></li>
-        {{/projectCtx.each}}
+        <projectCtx.each @prop="funders" @link={{true}} as |attributes funder|>
+          <li><a {{rdfa attributes}}>{{funder.firstName}} {{funder.lastName}}</a></li>
+        </projectCtx.each>
       </ul>
-    {{/ctx.get}}
+    </ctx.get>
   </div>
   <div>
     You can find him online at:
     <ul>
-      {{#ctx.each prop="accounts" as |attrs account accountCtx|}}
-        <li {{rdfa attrs}}>
-          {{accountCtx.get prop="accountServiceHomepage" link=true}} as {{accountCtx.get prop="accountName"}}
-        </li>
-      {{/ctx.each}}
+      <ctx.each @prop="accounts" as |attributes account AccountCtx|>
+        <li {{rdfa attributes}}>
+          <AccountCtx.get @prop="accountServiceHomepage" @link={{true}} /> as <AccountCtx.get @prop="accountName" />
+       </li>
+      </ctx.each>
     </ul>
   </div>
-{{/with-rdfa-context}}
+</WithRdfaContext>
 
 <h3>Project overview</h3>
 <ul>
-  {{#each model.projects as |project|}}
+  {{#each this.model.projects as |project|}}
     <li>
-      {{#rdfa/link-to href-to=(href-to "projects.show" project.code) value=project}}
+      <Rdfa::LinkTo @href-to={{href-to "projects.show" project.code}} @value={{project}}>
         {{project.name}}
-      {{/rdfa/link-to}}
+      </Rdfa::LinkTo>
     </li>
   {{/each}}
 </ul>
+
 {{outlet}}

@@ -1,29 +1,25 @@
-import { oneWay } from '@ember/object/computed';
-import { computed } from '@ember/object';
-import { inject } from '@ember/service';
-import Component from '@ember/component';
-import layout from '../../templates/components/rdfa/link-to';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
 import { hrefTo } from 'ember-href-to/helpers/href-to';
 
-export default Component.extend({
-  layout,
-  tagName: '',
-  router: inject(),
+export default class LinkToComponent extends Component {
+  @service router;
 
-  useUri: false,
-
-  typeof: oneWay("value.rdfaBindings.class"),
-  uri: oneWay("value.uri"),
-  url: computed('link-to', 'value', 'href-to', function() {
-    if (this.get('href-to'))
-      return this.get('href-to');
-    else
-      return hrefTo(this, [this.get('link-to'), this.value.get('id')]);
-  }),
-
-  actions: {
-    transition() {
-      this.router.transitionTo(this.url);
-    }
+  get uri() {
+    return this.args.value.get('uri');
   }
-});
+
+  get url() {
+    if (this.args['href-to']) {
+      return this.args['href-to'];
+    }
+
+    return hrefTo(this, [this.args['link-to'], this.args.value.get('id')]);
+  }
+
+  @action
+  transition() {
+    this.router.transitionTo(this.url);
+  }
+}

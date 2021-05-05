@@ -1,9 +1,0 @@
-<a
-  href={{if this.useUri this.uri this.url}}
-  property={{this.property}}
-  typeof={{this.typeof}}
-  resource={{if this.useUri undefined this.uri}}
-  {{action "transition"}}
->
-  {{yield}}
-</a>
