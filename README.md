@@ -2,6 +2,11 @@
 
 Provides helpers for adding RDFa in Ember apps.  The predicates are obtained from a meta-model defined on the rendered objects, the output is tackled by using helper components.
 
+## Compatibility
+* Ember.js v3.16 or above
+* Ember CLI v3.16 or above
+* Node.js v10 or above
+
 ## Usage
 
 Useage consists of two portions.  One one side, the correct metamodel needs to be configured on the model for which RDFa will be offered.  For rendering the contents, contextual components need to be injected into the templates.
