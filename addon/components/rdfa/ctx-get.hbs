@@ -23,14 +23,14 @@
         {{#if (has-block)}}
           {{yield (hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof) data.value componentHash}}
         {{else}}
-          <a property={{data.rdfaProperty}} href={{data.value.uri}} typeof={{data.typeof}}>{{data.value.uri}}</a>
+          <a property={{data.rdfaProperty}} href={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</a>
         {{/if}}
       {{else}}
         {{!-- We want to create a new scope for the resource --}}
         {{#if (has-block)}}
           {{yield (hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof) data.value componentHash}}
         {{else}}
-          <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}}>{{data.value.uri}}</span>
+          <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</span>
         {{/if}}
       {{/if}}
     {{else}}
@@ -39,13 +39,13 @@
         {{#if (has-block)}}
           {{yield (hash property=data.rdfaProperty href=data.value)}}
         {{else}}
-          <a property={{data.rdfaProperty}} href={{data.value}}>{{data.value}}</a>
+          <a property={{data.rdfaProperty}} href={{data.value}} ...attributes>{{data.value}}</a>
         {{/if}}
       {{else}}
         {{#if (has-block)}}
           {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
         {{else}}
-          <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}}>{{data.value}}</span>
+          <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{data.value}}</span>
         {{/if}}
       {{/if}}
     {{/if}}

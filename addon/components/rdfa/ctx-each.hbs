@@ -23,13 +23,13 @@
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
           {{else}}
-            <a property={{data.rdfaProperty}} href={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}}>{{nestedModel.uri}}</a>
+            <a property={{data.rdfaProperty}} href={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty resource=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
           {{else}}
-            <span property={{data.rdfaProperty}} resource={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}}>{{nestedModel.uri}}</span>
+            <span property={{data.rdfaProperty}} resource={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</span>
           {{/if}}
         {{/if}}
       {{else}}
@@ -37,13 +37,13 @@
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty href=nestedModel) index}}
           {{else}}
-            <a property={{data.rdfaProperty}} href={{nestedModel}}>{{nestedModel}}</a>
+            <a property={{data.rdfaProperty}} href={{nestedModel}} ...attributes>{{nestedModel}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) nestedModel index}}
           {{else}}
-            <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}}>{{nestedModel}}</span>
+            <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{nestedModel}}</span>
           {{/if}}
         {{/if}}
       {{/if}}
