@@ -1,0 +1,18 @@
+<Rdfa::Data
+  @model={{@model}}
+  @rdfaBindings={{@model.rdfaBindings}}
+  @prop={{@prop}}
+  @datatype={{@datatype}}
+  as |data|
+>
+  <img
+    alt={{@alt}}
+    height={{@height}}
+    property={{if @property @property data.rdfaProperty}}
+    sizes={{@sizes}}
+    src={{if data.value.uri data.value.uri data.value}}
+    srcset={{@srcset}}
+    width={{@width}}
+    ...attributes
+  />
+</Rdfa::Data>

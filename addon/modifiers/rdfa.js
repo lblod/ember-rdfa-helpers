@@ -24,7 +24,7 @@ export default class RdfaModifier extends Modifier {
     return this.args.positional[0]
   }
 
-  didReceiveArguments(e) {
+  didReceiveArguments() {
     for (let key of rdfaKeywords) {
       if (this.rdfaAttributes[key])
         this.element.setAttribute(key, this.rdfaAttributes[key]);

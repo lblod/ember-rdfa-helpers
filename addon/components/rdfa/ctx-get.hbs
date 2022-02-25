@@ -1,0 +1,54 @@
+<Rdfa::Data
+  @model={{@model}}
+  @rdfaBindings={{@model.rdfaBindings}}
+  @prop={{@prop}}
+  @property={{@property}}
+  @datatype={{@datatype}}
+  as |data|
+>
+{{#let (hash
+  get=(component "rdfa/ctx-get" model=data.value)
+  img=(component "rdfa/ctx-img" model=@model)
+  each=(component "rdfa/ctx-each" model=data.value))
+  as |componentHash|
+}}
+  {{#if this.isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
+    <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{data.value}} @useUri={{@useUri}} @property={{data.rdfaProperty}}>
+      {{yield data.value componentHash}}
+    </Rdfa::LinkTo>
+  {{else}}
+    {{#if (is-rdfa-resource data.value)}}
+      {{#if @link}}
+        {{!-- We want to link to a related resource using its URI --}}
+        {{#if (has-block)}}
+          {{yield (hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof) data.value componentHash}}
+        {{else}}
+          <a property={{data.rdfaProperty}} href={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</a>
+        {{/if}}
+      {{else}}
+        {{!-- We want to create a new scope for the resource --}}
+        {{#if (has-block)}}
+          {{yield (hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof) data.value componentHash}}
+        {{else}}
+          <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</span>
+        {{/if}}
+      {{/if}}
+    {{else}}
+      {{!-- Value is a literal --}}
+      {{#if @link}}
+        {{#if (has-block)}}
+          {{yield (hash property=data.rdfaProperty href=data.value)}}
+        {{else}}
+          <a property={{data.rdfaProperty}} href={{data.value}} ...attributes>{{data.value}}</a>
+        {{/if}}
+      {{else}}
+        {{#if (has-block)}}
+          {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
+        {{else}}
+          <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{data.value}}</span>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+{{/let}}
+</Rdfa::Data>

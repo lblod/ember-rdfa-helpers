@@ -1,0 +1,53 @@
+<Rdfa::Data
+  @model={{@model}}
+  @rdfaBindings={{@model.rdfaBindings}}
+  @prop={{@prop}}
+  @property={{@property}}
+  @datatype={{@datatype}}
+  as |data|
+>
+{{#each data.value as |nestedModel index|}}
+  {{#let (hash
+    get=(component "rdfa/ctx-get" model=nestedModel)
+    img=(component "rdfa/ctx-img" model=nestedModel)
+    each=(component "rdfa/ctx-each" model=nestedModel))
+    as |componentHash|
+  }}
+    {{#if this.isInAppLink}}
+      <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{nestedModel}} @useUri={{@useUri}} @property={{data.rdfaProperty}}>
+        {{yield nestedModel componentHash index}}
+      </Rdfa::LinkTo>
+    {{else}}
+      {{#if (is-rdfa-resource nestedModel)}}
+        {{#if this.link}}
+          {{#if (has-block)}}
+            {{yield (hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+          {{else}}
+            <a property={{data.rdfaProperty}} href={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</a>
+          {{/if}}
+        {{else}}
+          {{#if (has-block)}}
+            {{yield (hash property=data.rdfaProperty resource=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+          {{else}}
+            <span property={{data.rdfaProperty}} resource={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</span>
+          {{/if}}
+        {{/if}}
+      {{else}}
+        {{#if this.link}}
+          {{#if (has-block)}}
+            {{yield (hash property=data.rdfaProperty href=nestedModel) index}}
+          {{else}}
+            <a property={{data.rdfaProperty}} href={{nestedModel}} ...attributes>{{nestedModel}}</a>
+          {{/if}}
+        {{else}}
+          {{#if (has-block)}}
+            {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) nestedModel index}}
+          {{else}}
+            <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{nestedModel}}</span>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/let}}
+{{/each}}
+</Rdfa::Data>

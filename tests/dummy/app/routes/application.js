@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
+export default class ApplicationRoute extends Route {
   model() {
     const projectX = this.store.createRecord('project', {
       uri: 'http://data.semte.ch/projects/1',
@@ -59,4 +59,4 @@ export default Route.extend({
       projects: [ projectX, projectY ]
     };
   }
-});
+}

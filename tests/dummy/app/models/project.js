@@ -1,16 +1,16 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
-import { hasMany } from 'ember-data/relationships';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default Model.extend({
-  uri: attr(),
-  name: attr(),
-  funders: hasMany('person'),
-  participants: hasMany('person'),
+export default class ProjectModel extends Model {
+  @attr uri;
+  @attr name;
+  @hasMany('person') funders;
+  @hasMany('person') participants;
 
-  rdfaBindings: Object.freeze({
-    class: 'http://xmlns.com/foaf/0.1/Thing',
-    name: 'http://xmlns.com/foaf/0.1/name',
-    funders: 'http://xmlns.com/foaf/0.1/fundedBy'
-  })
-});
+  get rdfaBindings() {
+    return {
+      class: 'http://xmlns.com/foaf/0.1/Thing',
+      name: 'http://xmlns.com/foaf/0.1/name',
+      funders: 'http://xmlns.com/foaf/0.1/fundedBy',
+    };
+  }
+}

@@ -1,30 +1,31 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
-import { belongsTo, hasMany } from 'ember-data/relationships';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
-export default Model.extend({
-  uri: attr(),
-  firstName: attr(),
-  lastName: attr(),
-  nicknames: attr(),
-  profilePicture: attr(),
-  homepage: attr(),
-  currentProject: belongsTo('project', { inverse: 'participants' }),
-  projects: hasMany('project', { inverse: 'funders' }),
-  accounts: hasMany('account'),
+export default class PersonModel extends Model {
+  @attr uri;
+  @attr firstName;
+  @attr lastName;
+  @attr nicknames;
+  @attr birthDate;
+  @attr profilePicture;
+  @attr homepage;
+  @belongsTo('project', { inverse: 'participants' }) currentProject;
+  @hasMany('project', { inverse: 'funders' }) projects;
+  @hasMany('account') accounts;
 
-  rdfaBindings: Object.freeze({
-    class: 'http://schema.org/Person',
-    firstName: 'http://schema.org/givenName',
-    lastName: 'http://schema.org/familyName',
-    nicknames: 'http://schema.org/alternateName',
-    birthDate: {
-      property: 'https://schema.org/birthDate',
-      datatype: 'xsd:dateTime'
-    },
-    profilePicture: 'http://schema.org/image',
-    homepage: 'http://schema.org/url',
-    currentProject: 'http://xmlns.com/foaf/0.1/currentProject',
-    accounts: 'http://xmlns.com/foaf/0.1/holdsAccount'
-  })
-});
+  get rdfaBindings() {
+    return {
+      class: 'http://schema.org/Person',
+      firstName: 'http://schema.org/givenName',
+      lastName: 'http://schema.org/familyName',
+      nicknames: 'http://schema.org/alternateName',
+      birthDate: {
+        property: 'https://schema.org/birthDate',
+        datatype: 'xsd:dateTime',
+      },
+      profilePicture: 'http://schema.org/image',
+      homepage: 'http://schema.org/url',
+      currentProject: 'http://xmlns.com/foaf/0.1/currentProject',
+      accounts: 'http://xmlns.com/foaf/0.1/holdsAccount',
+    };
+  }
+}
