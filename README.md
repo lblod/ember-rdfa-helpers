@@ -44,9 +44,9 @@ E.g.
 
 ```javascript
 export default class SomethingModel extends Model {
-  @attr('string') uri
-  @attr('string') title
-  @attr('date')   created
+  @attr('string') uri;
+  @attr('string') title;
+  @attr('date')   created;
 
   rdfaBindings: {
     title:   'dc:title',
@@ -54,7 +54,7 @@ export default class SomethingModel extends Model {
       property: 'dc:created',
       datatype: 'xsd:dateTime'
     }
-  }
+  };
 };
 ```
 
@@ -90,7 +90,7 @@ Example:
 
 ```handlebars
 <WithRdfaContext @model={{person}} @vocab="http://schema.org" as |ctx|>
-   ...
+  ...
 </WithRdfaContext>
 ```
 
@@ -116,11 +116,11 @@ Examples:
 
 ```handlebars
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.get @prop="name" />
+  <ctx.get @prop="name" />
 </WithRdfaContext>
 
 <WithRdfaContext @model={{account}} as |ctx|>
-    <ctx.get @prop="accountServiceHomepage" @link={{true}} />
+  <ctx.get @prop="accountServiceHomepage" @link={{true}} />
 </WithRdfaContext>
 ```
 
@@ -137,46 +137,46 @@ Examples:
 
 ```handlebars
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.get prop="name" as |elements value|>
-        <div {{rdfa elements}} class="some-custom-css-class">{{value}}</div>
-    </ctx.get>
+  <ctx.get @prop="name" as |elements value|>
+    <div {{rdfa elements}} class="some-custom-css-class">{{value}}</div>
+  </ctx.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.get @prop="birthDate" as |elements value|>
-        <span {{rdfa elements}}>{{format-date value}}</span>
-    </ctx.get>
+  <ctx.get @prop="birthDate" as |elements value|>
+    <span {{rdfa elements}}>{{format-date value}}</span>
+  </ctx.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.get @prop="homepage" @link={{true}} as |elements|>
-       <a {{rdfa elements}}>my homepage</a>
-    </ctx.get>
+  <ctx.get @prop="homepage" @link={{true}} as |elements|>
+    <a {{rdfa elements}}>my homepage</a>
+  </ctx.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.get @prop="currentProject" as |elements value projectCtx|>
-        <div {{rdfa elements}}>
-            <projectCtx.get @prop="name" />
-            <projectCtx.get @prop="budget" as |elements value|>
-                <span {{rdfa elements}}>{{format-amount budget}}</span>
-            </projectCtx.get>
-        </div>
-    </ctx.get>
+  <ctx.get @prop="currentProject" as |elements value projectCtx|>
+    <div {{rdfa elements}}>
+      <projectCtx.get @prop="name" />
+      <projectCtx.get @prop="budget" as |elements value|>
+        <span {{rdfa elements}}>{{format-amount budget}}</span>
+      </projectCtx.get>
+    </div>
+  </ctx.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <!-- Link to the project detail pages on /projects/:id -->
-    <ctx.get @prop="currentProject" @link-to="projects.show" as |value|>
-        {{value.name}}
-    </ctx.get>
+  <!-- Link to the project detail pages on /projects/:id -->
+  <ctx.get @prop="currentProject" @link-to="projects.show" as |value|>
+    {{value.name}}
+  </ctx.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <!-- Link to the project detail pages on /persons/:person_id/projects/:project_code -->
-    <ctx.get @prop="currentProject" @href-to=(href-to "persons.person.projects.show" person.id person.currentProject.code) as |value|>
-        {{value.name}}
-    </ctx.get>
+  <!-- Link to the project detail pages on /persons/:person_id/projects/:project_code -->
+  <ctx.get @prop="currentProject" @href-to=(href-to "persons.person.projects.show" person.id person.currentProject.code) as |value|>
+    {{value.name}}
+  </ctx.get>
 </WithRdfaContext>
 ```
 
@@ -205,11 +205,11 @@ Example:
 
 ```handlebars
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.each @prop="nicknames" />
+  <ctx.each @prop="nicknames" />
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-    <ctx.each @prop="homepages" @link={{true}} />
+  <ctx.each @prop="homepages" @link={{true}} />
 </WithRdfaContext>
 ```
 
@@ -227,19 +227,19 @@ Examples:
 
 ```handlebars
 <WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
-    <ctx.each @prop="funders" @link={{true}} as |elements funder|>
-        <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
-    </ctx.each>
+  <ctx.each @prop="funders" @link={{true}} as |elements funder|>
+    <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
+  </ctx.each>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} @tagName="ul" as |ctx|>
-    <ul>
-        <ctx.each @prop="accounts" as |elements account accountCtx|>
-            <li {{rdfa elements}}>
-              <accountCtx.get @prop="accountServiceHomepage" @link={{true}} />
-            </li>
-        </ctx.each>
-    </ul>
+  <ul>
+    <ctx.each @prop="accounts" as |elements account accountCtx|>
+      <li {{rdfa elements}}>
+        <accountCtx.get @prop="accountServiceHomepage" @link={{true}} />
+      </li>
+    </ctx.each>
+  </ul>
 </WithRdfaContext>
 ```
 
@@ -257,7 +257,7 @@ Example:
 
 ```handlebars
 <WithRdfaContext @model={{model.person}} as |ctx|>
-   <ctx.img @prop="profilePicture" alt="Profile pic" width=100 height=100 />
+  <ctx.img @prop="profilePicture" alt="Profile pic" width=100 height=100 />
 </WithRdfaContext>
 ```
 
@@ -275,13 +275,13 @@ Example:
 
 ```handlebars
 <ul>
-    {{#each model.projects as |project|}}
-        <li>
-            <Rdfa::LinkTo @href-to=(href-to "projects.show" project.code) @value=project}}
-                {{project.name}}
-            </Rdfa::LinkTo>
-        </li>
-    {{/each}}
+  {{#each model.projects as |project|}}
+    <li>
+      <Rdfa::LinkTo @href-to=(href-to "projects.show" project.code) @value=project}}
+        {{project.name}}
+      </Rdfa::LinkTo>
+    </li>
+  {{/each}}
 </ul>
 ```
 
@@ -404,6 +404,7 @@ If new forms of output should be supported, a new component should be made in th
 * `npm install`
 
 ### Wishlist
+
 * Support for inverse relations as RDFa
 * Support for computed/composable values (e.g. sorted hasMany relation)
 
