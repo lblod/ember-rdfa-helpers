@@ -39,9 +39,9 @@ steps:
   - install
 
 trigger:
-  exclude:
-    event:
-    - pull_request
+  event:
+    exclude:
+      - pull_request
 
 ---
 
