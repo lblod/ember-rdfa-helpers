@@ -28,12 +28,12 @@ export default class PersonModel extends Model {
   @hasMany('account')   accounts;
 
   rdfaBindings = {
-  class:          "http://schema.org/Person",
-  firstName:      "http://schema.org/givenName",
-  lastName:       "http://schema.org/familyName",
-  profilePicture: "http://schema.org/image",
-  currentProject: "foaf:currentProject",
-  accounts:       "foaf:holdsAccount"
+    class:          'http://schema.org/Person',
+    firstName:      'http://schema.org/givenName',
+    lastName:       'http://schema.org/familyName',
+    profilePicture: 'http://schema.org/image',
+    currentProject: 'foaf:currentProject',
+    accounts:       'foaf:holdsAccount'
   };
 }
 ```
@@ -48,7 +48,8 @@ export default class SomethingModel extends Model {
   @attr('string') title;
   @attr('date')   created;
 
-  rdfaBindings: {
+  rdfaBindings = {
+    class:   'http://schema.org/Something',
     title:   'dc:title',
     created: {
       property: 'dc:created',
