@@ -1,0 +1,63 @@
+kind: pipeline
+type: docker
+name: verify
+
+steps:
+  - name: install
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - npm ci
+  - name: lint
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - ember dependency-lint
+      - npm run lint:hbs
+      - npm run lint:js
+  - name: test
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - npm run test:ember
+  - name: build-dry-run
+    image: plugins/docker
+    settings:
+      repo: lblod/frontend-gelinkt-notuleren
+      dry_run: true
+      purge: true
+
+trigger:
+  event:
+    - pull_request
+
+---
+
+kind: pipeline
+type: docker
+name: verify-on-push-master
+
+steps:
+  - name: install
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - npm ci
+  - name: lint
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - ember dependency-lint
+      - npm run lint:hbs
+      - npm run lint:js
+  - name: test
+    image: danlynn/ember-cli:3.28.5-node_16.13
+    commands:
+      - npm run test:ember
+  - name: build-dry-run
+    image: plugins/docker
+    settings:
+      repo: lblod/frontend-gelinkt-notuleren
+      dry_run: true
+      purge: true
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
