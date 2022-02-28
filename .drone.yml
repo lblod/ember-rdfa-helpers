@@ -38,6 +38,11 @@ steps:
   depends_on:
   - install
 
+trigger:
+  exclude:
+    event:
+    - pull_request
+
 ---
 
 kind: pipeline
