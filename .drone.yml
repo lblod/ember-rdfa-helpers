@@ -39,7 +39,7 @@ steps:
   - install
 
 - name: compatibility-test
-  image: danlynn/ember-cli:3.28.5-node_16.13
+  image: danlynn/ember-cli:3.20.0
   failure: ignore
   commands:
   - npm run test:ember-compatibility
@@ -48,8 +48,7 @@ steps:
 
 trigger:
   event:
-    exclude:
-      - pull_request
+    - pull_request
 
 ---
 
