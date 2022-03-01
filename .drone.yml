@@ -38,13 +38,22 @@ steps:
   depends_on:
   - install
 
-- name: compatibility-test
+trigger:
+  event:
+    - pull_request
+
+---
+
+kind: pipeline
+type: docker
+name: compatibility
+steps:
+- name: ember-compatibility
   image: danlynn/ember-cli:3.28.5-node_16.13
   failure: ignore
   commands:
+  - npm ci
   - npm run test:ember-compatibility
-  depends_on:
-  - install
 
 trigger:
   event:
