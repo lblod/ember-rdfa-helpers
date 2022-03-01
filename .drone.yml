@@ -38,6 +38,14 @@ steps:
   depends_on:
   - install
 
+- name: compatibility-test
+  image: danlynn/ember-cli:3.28.5-node_16.13
+  failure: ignore
+  commands:
+  - npm run test:ember-compatibility
+  depends_on:
+  - install
+
 trigger:
   event:
     exclude:
