@@ -77,8 +77,8 @@ trigger:
     - tag
 
 ---
+
 kind: secret
 name: npm_access_token
 data: GFqILvOKgzE1aJnUbra/RurRR8HtmjqjEuZQxUgm4uuEUwr0VgsNHAqC05VO/wLLMPos1Xy1/j9AGFpzR6GdMQ==
----
 
