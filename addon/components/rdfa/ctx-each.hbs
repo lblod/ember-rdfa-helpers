@@ -8,9 +8,22 @@
 >
 {{#each data.value as |nestedModel index|}}
   {{#let (hash
-    get=(component "rdfa/ctx-get" model=nestedModel)
-    img=(component "rdfa/ctx-img" model=nestedModel)
-    each=(component "rdfa/ctx-each" model=nestedModel))
+    get=  (component "rdfa/ctx-get" model=nestedModel)
+    spawn=(hash
+      context=(component "rdfa/ctx-get" model=nestedModel)
+      span=   (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/span"))
+      div=    (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/div"))
+      a=      (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/a")))
+    img=  (component "rdfa/ctx-img"  model=nestedModel)
+    each= (component "rdfa/ctx-each" model=nestedModel)
+    spawneach=(hash
+      context=(component "rdfa/ctx-each" model=nestedModel)
+      a=      (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/a"))
+      li=     (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/li"))
+      lia=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/lia"))
+      span=   (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/span"))
+      div=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/div")))
+    )
     as |componentHash|
   }}
     {{#if this.isInAppLink}}
@@ -21,13 +34,25 @@
       {{#if (is-rdfa-resource nestedModel)}}
         {{#if @link}}
           {{#if (has-block)}}
-            {{yield (hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+            {{#if @subComponent}}
+              {{#component @subComponent attributes=(hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class)}}
+                {{yield nestedModel componentHash index}}
+              {{/component}}
+            {{else}}
+              {{yield (hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+            {{/if}}
           {{else}}
             <a property={{data.rdfaProperty}} href={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
-            {{yield (hash property=data.rdfaProperty resource=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+            {{#if @subComponent}}
+              {{#component @subComponent attributes=(hash property=data.rdfaProperty resource=nestedModel.uri typeof=nestedModel.rdfaBindings.class)}}
+                {{yield nestedModel componentHash index}}
+              {{/component}}
+            {{else}}
+              {{yield (hash property=data.rdfaProperty resource=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
+            {{/if}}
           {{else}}
             <span property={{data.rdfaProperty}} resource={{nestedModel.uri}} typeof={{nestedModel.rdfaBindings.class}} ...attributes>{{nestedModel.uri}}</span>
           {{/if}}
@@ -35,13 +60,25 @@
       {{else}}
         {{#if @link}}
           {{#if (has-block)}}
-            {{yield (hash property=data.rdfaProperty href=nestedModel) index}}
+            {{#if @subComponent}}
+              {{#component @subComponent attributes=(hash property=data.rdfaProperty href=nestedModel)}}
+                {{yield index}}
+              {{/component}}
+            {{else}}
+              {{yield (hash property=data.rdfaProperty href=nestedModel) index}}
+            {{/if}}
           {{else}}
             <a property={{data.rdfaProperty}} href={{nestedModel}} ...attributes>{{nestedModel}}</a>
           {{/if}}
         {{else}}
           {{#if (has-block)}}
-            {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) nestedModel index}}
+            {{#if @subComponent}}
+              {{#component @subComponent attributes=(hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent)}}
+                {{yield nestedModel index}}
+              {{/component}}
+            {{else}}
+              {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) nestedModel index}}
+            {{/if}}
           {{else}}
             <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{nestedModel}}</span>
           {{/if}}

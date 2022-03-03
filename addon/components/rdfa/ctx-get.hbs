@@ -8,8 +8,22 @@
 >
 {{#let (hash
   get=(component "rdfa/ctx-get" model=data.value)
+  spawn=(hash
+    context=(component "rdfa/ctx-get" model=@model)
+    span=   (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/span"))
+    div=    (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/div"))
+    a=      (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/a"))
+  )
   img=(component "rdfa/ctx-img" model=@model)
-  each=(component "rdfa/ctx-each" model=data.value))
+  each=(component "rdfa/ctx-each" model=data.value)
+  spawneach=(hash
+    context=(component "rdfa/ctx-each" model=data.value)
+    a=      (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/a"))
+    li=     (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/li"))
+    lia=    (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/lia"))
+    span=   (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/span"))
+    div=    (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/div")))
+  )
   as |componentHash|
 }}
   {{#if this.isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
@@ -21,14 +35,26 @@
       {{#if @link}}
         {{!-- We want to link to a related resource using its URI --}}
         {{#if (has-block)}}
-          {{yield (hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof) data.value componentHash}}
+          {{#if @subComponent}}
+            {{#component @subComponent attributes=(hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof)}}
+              {{yield data.value componentHash}}
+            {{/component}}
+          {{else}}
+            {{yield (hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof) data.value componentHash}}
+          {{/if}}
         {{else}}
           <a property={{data.rdfaProperty}} href={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</a>
         {{/if}}
       {{else}}
         {{!-- We want to create a new scope for the resource --}}
         {{#if (has-block)}}
-          {{yield (hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof) data.value componentHash}}
+          {{#if @subComponent}}
+            {{#component @subComponent attributes=(hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof)}}
+              {{yield data.value componentHash}}
+            {{/component}}
+          {{else}}
+            {{yield (hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof) data.value componentHash}}
+          {{/if}}
         {{else}}
           <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</span>
         {{/if}}
@@ -37,13 +63,25 @@
       {{!-- Value is a literal --}}
       {{#if @link}}
         {{#if (has-block)}}
-          {{yield (hash property=data.rdfaProperty href=data.value)}}
+          {{#if @subComponent}}
+            {{#component @subComponent attributes=(hash property=data.rdfaProperty href=data.value)}}
+              {{yield}}
+            {{/component}}
+          {{else}}
+            {{yield (hash property=data.rdfaProperty href=data.value)}}
+          {{/if}}
         {{else}}
           <a property={{data.rdfaProperty}} href={{data.value}} ...attributes>{{data.value}}</a>
         {{/if}}
       {{else}}
         {{#if (has-block)}}
-          {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
+          {{#if @subComponent}}
+            {{#component @subComponent attributes=(hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent)}}
+              {{yield data.value}}
+            {{/component}}
+          {{else}}
+            {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
+          {{/if}}
         {{else}}
           <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{data.value}}</span>
         {{/if}}

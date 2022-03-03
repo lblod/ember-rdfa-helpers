@@ -1,5 +1,19 @@
 {{yield (hash
   get=(component "rdfa/ctx-get" model=@model)
-  img=(component "rdfa/ctx-img" model=@model)
+  spawn=(hash
+    context=(component "rdfa/ctx-get" model=@model)
+    span=   (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/span"))
+    div=    (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/div"))
+    a=      (component "rdfa/ctx-get" model=@model subComponent=(component "rdfa/ctx/a"))
+  )
+  img= (component "rdfa/ctx-img"  model=@model)
   each=(component "rdfa/ctx-each" model=@model)
-)}}
+  spawneach=(hash
+    context=(component "rdfa/ctx-each" model=@model)
+    a=      (component "rdfa/ctx-each" model=@model subComponent=(component "rdfa/ctx/a"))
+    li=     (component "rdfa/ctx-each" model=@model subComponent=(component "rdfa/ctx/li"))
+    lia=    (component "rdfa/ctx-each" model=@model subComponent=(component "rdfa/ctx/lia"))
+    span=   (component "rdfa/ctx-each" model=@model subComponent=(component "rdfa/ctx/span"))
+    div=    (component "rdfa/ctx-each" model=@model subComponent=(component "rdfa/ctx/div")))
+  )
+}}
