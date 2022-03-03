@@ -19,7 +19,7 @@
       </Rdfa::LinkTo>
     {{else}}
       {{#if (is-rdfa-resource nestedModel)}}
-        {{#if this.link}}
+        {{#if @link}}
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty href=nestedModel.uri typeof=nestedModel.rdfaBindings.class) nestedModel componentHash index}}
           {{else}}
@@ -33,7 +33,7 @@
           {{/if}}
         {{/if}}
       {{else}}
-        {{#if this.link}}
+        {{#if @link}}
           {{#if (has-block)}}
             {{yield (hash property=data.rdfaProperty href=nestedModel) index}}
           {{else}}
