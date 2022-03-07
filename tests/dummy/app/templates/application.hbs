@@ -10,7 +10,7 @@
   <div>
     <ctx.get @prop="firstName" /> <ctx.get @prop="lastName" />
     is born on
-    <ctx.spawn.span @prop="birthDate" as |value bdCtx|>
+    <ctx.spawn.span @prop="birthDate" as |value|>
       {{format-date value}}
     </ctx.spawn.span>
     For more info, have a look at
