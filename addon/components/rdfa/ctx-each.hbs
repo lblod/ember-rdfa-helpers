@@ -27,7 +27,7 @@
     as |componentHash|
   }}
     {{#if this.isInAppLink}}
-      <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{nestedModel}} @useUri={{@useUri}} @property={{data.rdfaProperty}}>
+      <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{nestedModel}} @useUri={{@useUri}} @overrideUri={{@overrideUri}} @property={{data.rdfaProperty}}>
         {{yield nestedModel componentHash index}}
       </Rdfa::LinkTo>
     {{else}}

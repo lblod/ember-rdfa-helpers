@@ -27,7 +27,7 @@
   as |componentHash|
 }}
   {{#if this.isInAppLink}} {{!-- We want to link to a related resource using an Ember route --}}
-    <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{data.value}} @useUri={{@useUri}} @property={{data.rdfaProperty}}>
+    <Rdfa::LinkTo @link-to={{@link-to}} @href-to={{@href-to}} @value={{data.value}} @useUri={{@useUri}} @overrideUri={{@overrideUri}} @property={{data.rdfaProperty}}>
       {{yield data.value componentHash}}
     </Rdfa::LinkTo>
   {{else}}
