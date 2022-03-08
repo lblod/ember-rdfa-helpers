@@ -8,25 +8,23 @@
 >
 {{#each data.value as |nestedModel index|}}
   {{#let (hash
-    get=  (component "rdfa/ctx-get" model=nestedModel)
-    spawn=(hash
-      context=(component "rdfa/ctx-get" model=nestedModel)
-      span=   (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/span"))
-      div=    (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/div"))
-      link=   (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/link"))
-      p=      (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/p"))
-      a=      (component "rdfa/ctx-get" model=nestedModel subComponent=(component "rdfa/ctx/a")))
-    img=  (component "rdfa/ctx-img"  model=nestedModel)
-    each= (component "rdfa/ctx-each" model=nestedModel)
-    spawneach=(hash
-      context=(component "rdfa/ctx-each" model=nestedModel)
-      a=      (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/a"))
-      p=      (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/p"))
-      link=   (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/link"))
-      li=     (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/li"))
-      lia=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/lia"))
-      span=   (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/span"))
-      div=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/div")))
+    img=    (component "rdfa/ctx-img"  model=nestedModel)
+    get=    (component "rdfa/ctx-get"  model=nestedModel)
+    span=   (component "rdfa/ctx-get"  model=nestedModel subComponent=(component "rdfa/ctx/span"))
+    div=    (component "rdfa/ctx-get"  model=nestedModel subComponent=(component "rdfa/ctx/div"))
+    link=   (component "rdfa/ctx-get"  model=nestedModel subComponent=(component "rdfa/ctx/link"))
+    p=      (component "rdfa/ctx-get"  model=nestedModel subComponent=(component "rdfa/ctx/p"))
+    a=      (component "rdfa/ctx-get"  model=nestedModel subComponent=(component "rdfa/ctx/a"))
+    each=(hash
+      get=  (component "rdfa/ctx-each" model=nestedModel)
+      a=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/a"))
+      p=    (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/p"))
+      link= (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/link"))
+      li=   (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/li"))
+      lia=  (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/lia"))
+      span= (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/span"))
+      div=  (component "rdfa/ctx-each" model=nestedModel subComponent=(component "rdfa/ctx/div"))
+      )
     )
     as |componentHash|
   }}

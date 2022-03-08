@@ -10,17 +10,17 @@
   <div>
     <ctx.get @prop="firstName" /> <ctx.get @prop="lastName" />
     is born on
-    <ctx.spawn.span @prop="birthDate" as |value|>
+    <ctx.span @prop="birthDate" as |value|>
       {{format-date value}}
-    </ctx.spawn.span>
+    </ctx.span>
     For more info, have a look at
-    <ctx.spawn.a @prop="homepage" @link={{true}}>
+    <ctx.a @prop="homepage" @link={{true}}>
       his homepage
-    </ctx.spawn.a>
+    </ctx.a>
   </div>
   <div>
     He's also known by nicknames:
-    <ctx.each @prop="nicknames" />
+    <ctx.each.get @prop="nicknames" />
   </div>
   <div>
     Link to the project detail page of
@@ -34,18 +34,18 @@
       <span {{rdfa attributes}}>{{project.name}}</span>
       which is funded by:
       <ul>
-        <projectCtx.spawneach.lia @prop="funders" @link={{true}} as |funder|>
+        <projectCtx.each.lia @prop="funders" @link={{true}} as |funder|>
           {{funder.firstName}} {{funder.lastName}}
-        </projectCtx.spawneach.lia>
+        </projectCtx.each.lia>
       </ul>
     </ctx.get>
   </div>
   <div>
     You can find him online at:
     <ul>
-      <ctx.spawneach.li @prop="accounts" as |account AccountCtx|>
+      <ctx.each.li @prop="accounts" as |account AccountCtx|>
           <AccountCtx.get @prop="accountServiceHomepage" @link={{true}} /> as <AccountCtx.get @prop="accountName" />
-      </ctx.spawneach.li>
+      </ctx.each.li>
     </ul>
   </div>
 </WithRdfaContext>
