@@ -12,6 +12,8 @@
     context=(component "rdfa/ctx-get" model=data.value)
     span=   (component "rdfa/ctx-get" model=data.value subComponent=(component "rdfa/ctx/span"))
     div=    (component "rdfa/ctx-get" model=data.value subComponent=(component "rdfa/ctx/div"))
+    link=   (component "rdfa/ctx-get" model=data.value subComponent=(component "rdfa/ctx/link"))
+    p=      (component "rdfa/ctx-get" model=data.value subComponent=(component "rdfa/ctx/p"))
     a=      (component "rdfa/ctx-get" model=data.value subComponent=(component "rdfa/ctx/a"))
   )
   img=(component "rdfa/ctx-img" model=@model)
@@ -19,6 +21,8 @@
   spawneach=(hash
     context=(component "rdfa/ctx-each" model=data.value)
     a=      (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/a"))
+    p=      (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/p"))
+    link=   (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/link"))
     li=     (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/li"))
     lia=    (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/lia"))
     span=   (component "rdfa/ctx-each" model=data.value subComponent=(component "rdfa/ctx/span"))
@@ -36,9 +40,9 @@
         {{!-- We want to link to a related resource using its URI --}}
         {{#if (has-block)}}
           {{#if @subComponent}}
-            {{#component @subComponent attributes=(hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof)}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof}} ...attributes>
               {{yield data.value componentHash}}
-            {{/component}}
+            </@subComponent>
           {{else}}
             {{yield (hash property=data.rdfaProperty href=data.value.uri typeof=data.typeof) data.value componentHash}}
           {{/if}}
@@ -49,14 +53,18 @@
         {{!-- We want to create a new scope for the resource --}}
         {{#if (has-block)}}
           {{#if @subComponent}}
-            {{#component @subComponent attributes=(hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof)}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof}} ...attributes>
               {{yield data.value componentHash}}
-            {{/component}}
+            </@subComponent>
           {{else}}
             {{yield (hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof) data.value componentHash}}
           {{/if}}
         {{else}}
-          <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</span>
+          {{#if @subComponent}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty resource=data.value.uri typeof=data.typeof}} ...attributes>{{data.value.uri}}</@subComponent>
+          {{else}}
+            <span property={{data.rdfaProperty}} resource={{data.value.uri}} typeof={{data.typeof}} ...attributes>{{data.value.uri}}</span>
+          {{/if}}
         {{/if}}
       {{/if}}
     {{else}}
@@ -64,9 +72,9 @@
       {{#if @link}}
         {{#if (has-block)}}
           {{#if @subComponent}}
-            {{#component @subComponent attributes=(hash property=data.rdfaProperty href=data.value)}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty href=data.value}} ...attributes>
               {{yield}}
-            {{/component}}
+            </@subComponent>
           {{else}}
             {{yield (hash property=data.rdfaProperty href=data.value)}}
           {{/if}}
@@ -76,9 +84,9 @@
       {{else}}
         {{#if (has-block)}}
           {{#if @subComponent}}
-            {{#component @subComponent attributes=(hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent)}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent}} ...attributes>
               {{yield data.value}}
-            {{/component}}
+            </@subComponent>
           {{else}}
             {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
           {{/if}}
