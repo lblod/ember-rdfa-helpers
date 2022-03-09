@@ -185,7 +185,7 @@ Examples:
 Warning: Even though the `elements` property can be renamed by the user, when using `ctx.get` in its angle brackets form, don't replace it by `attrs`.
 This keyword is already used by the core code of components in Ember Octane.
 
-#### `ctx.each`
+#### `ctx.each.get`
 
 Allows looping over a relationship. The interface is very similar to `ctx.get`.
 
@@ -208,11 +208,11 @@ Example:
 
 ```handlebars
 <WithRdfaContext @model={{person}} as |ctx|>
-  <ctx.each @prop="nicknames" />
+  <ctx.each.get @prop="nicknames" />
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-  <ctx.each @prop="homepages" @link={{true}} />
+  <ctx.each.get @prop="homepages" @link={{true}} />
 </WithRdfaContext>
 ```
 
@@ -230,18 +230,18 @@ Examples:
 
 ```handlebars
 <WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
-  <ctx.each @prop="funders" @link={{true}} as |elements funder|>
+  <ctx.each.get @prop="funders" @link={{true}} as |elements funder|>
     <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
-  </ctx.each>
+  </ctx.each.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} @tagName="ul" as |ctx|>
   <ul>
-    <ctx.each @prop="accounts" as |elements account accountCtx|>
+    <ctx.each.get @prop="accounts" as |elements account accountCtx|>
       <li {{rdfa elements}}>
         <accountCtx.get @prop="accountServiceHomepage" @link={{true}} />
       </li>
-    </ctx.each>
+    </ctx.each.get>
   </ul>
 </WithRdfaContext>
 ```
@@ -273,6 +273,7 @@ The component takes the following arguments:
 - _optional_ `link-to`: creates a link to the value using an Ember Route path. The value URI will be set as `resource` attribute, while the passed route path, with the value id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the value using an Ember Route URL. The value URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
 - _optional_ `useUri=false`: Sets the value URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 Example:
 
