@@ -95,7 +95,7 @@ Example:
 </WithRdfaContext>
 ```
 
-#### `ctx.get`
+#### `ctx.get` and others
 
 Gets a property/relation from the context and applies the right bindings.
 
@@ -126,14 +126,29 @@ Examples:
 </WithRdfaContext>
 ```
 
+Alternatively, use one of the supported subcomponents to create an element other than a simple span. Supported subcomponents are `span`, `div`, `link`, `a` and `p`.
+
+Example:
+
+```handlebars
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.div @prop="name" />
+</WithRdfaContext>
+```
+
+This example will do exactly as above, but by creating a `div` instead of an implicit `span`. Note that when creating a link with `@link={{true}}`, you should be carefull to use `ctx.a` to explicitely create a link or `ctx.get` to implicitely create a link. Other elements won't create a proper link.
+
+
 ##### Block format
 
-The block format receives the following params:
+**`ctx.get`**
+
+The block format using `ctx.get` receives the following params:
 - `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
+The block format with `get` offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
@@ -185,11 +200,35 @@ Examples:
 Warning: Even though the `elements` property can be renamed by the user, when using `ctx.get` in its angle brackets form, don't replace it by `attrs`.
 This keyword is already used by the core code of components in Ember Octane.
 
+**`ctx.span`, `ctx.div`, `ctx.p`, `ctx.li`, `ctx.a`, `ctx.link`, ...**
+
+The block format using these subcomponents receives the following params:
+- `value`: value of the property
+- `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
+
+*Note the missing `elements` parameter from `ctx.get`. This is because an HTML element is spawned with the correct RDFa properties attached and is does not make sense to place those properties more than once in the HTML.*
+
+The mechanism for all supported subcomponents is similar to `get`. The following example shows two equivalent blocks, one using `ctx.get` and one using `ctx.div` to demonstrate their use.
+
+```handlebars
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.get @prop="name" as |elements value|>
+    <div {{rdfa elements}} class="some-custom-css-class">The value is: {{value}}</div>
+  </ctx.get>
+</WithRdfaContext>
+
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.div @prop="name" class="some-custom-css-class" as |value|>
+    The value is: {{value}}
+  </ctx.div>
+</WithRdfaContext>
+```
+
 #### `ctx.each.get`
 
 Allows looping over a relationship. The interface is very similar to `ctx.get`.
 
-The following can be supplied to `ctx.each`:
+The following can be supplied to `ctx.each.get`:
 - _required_ `prop`: name of the JavaScript property of context which will be rendered.
 - _optional_ `property`: override the property with a different semantic property.
 - _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
@@ -198,11 +237,11 @@ The following can be supplied to `ctx.each`:
 - _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
 - _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
-The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
+The component supports a block format as well as a non-block format.
 
 ##### Non-block format
 
-The non-block format doesn't allow any customization of the rendered output (e.g. tag name, CSS classes).
+The non-block format places a `span` in the HTML with the proper RDFa properties attached, containing the value of the property.
 
 Example:
 
@@ -218,13 +257,15 @@ Example:
 
 ##### Block format
 
-The block format receives the following params:
+**`ctx.each.get`**
+
+The block format using `ctx.each.get` receives the following params:
 - `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 - `index`: index of the value in the array
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
+The block format using `ctx.each.get` offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
@@ -243,6 +284,31 @@ Examples:
       </li>
     </ctx.each.get>
   </ul>
+</WithRdfaContext>
+```
+
+**`ctx.each.span`, `ctx.each.div`, `ctx.each.p`, `ctx.each.link`, `ctx.each.a`, `ctx.each.li`, `ctx.each.lia`, ...**
+
+The block format using these subcomponents receives the following params:
+- `value`: value of the property
+- `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
+- `index`: index of the value in the array
+
+*Note the missing `elements` parameter from `ctx.get`. This is because an HTML element is spawned with the correct RDFa properties attached and is does not make sense to place those properties more than once in the HTML.*
+
+The mechanism for all supported subcomponents is similar to `get`. The following example shows two equivalent blocks, one using `ctx.each.get` and one using `ctx.each.div` to demonstrate their use.
+
+```handlebars
+<WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
+  <ctx.each.get @prop="funders" @link={{true}} as |elements funder|>
+    <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
+  </ctx.each.get>
+</WithRdfaContext>
+
+<WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
+  <ctx.each.lia @prop="funders" @link={{true}} as |funder|>
+    {{funder.firstName}} {{funder.lastName}}
+  </ctx.each.lia>
 </WithRdfaContext>
 ```
 
