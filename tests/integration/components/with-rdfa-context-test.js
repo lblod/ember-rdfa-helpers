@@ -3,10 +3,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | with-rdfa-context', function(hooks) {
+module('Integration | Component | with-rdfa-context', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders html attributes based on the model data', async function(assert) {
+  test('it renders html attributes based on the model data', async function (assert) {
     const storeService = this.owner.lookup('service:store');
 
     const testPerson = storeService.createRecord('person', {
@@ -20,19 +20,22 @@ module('Integration | Component | with-rdfa-context', function(hooks) {
       </WithRdfaContext>
     `);
 
-
-    let domElement = assert.dom('#test')
-    domElement.exists()
+    let domElement = assert.dom('#test');
+    domElement
+      .exists()
       .hasAttribute('resource', 'http://example.com/person/1234')
       .hasAttribute('typeof', 'http://schema.org/Person');
 
     testPerson.set('uri', null);
     await settled();
 
-    domElement.exists().doesNotHaveAttribute('resource').doesNotHaveAttribute('typeof');
+    domElement
+      .exists()
+      .doesNotHaveAttribute('resource')
+      .doesNotHaveAttribute('typeof');
   });
 
-  test('it\'s possible to configure the rendered HTML element ', async function(assert) {
+  test("it's possible to configure the rendered HTML element ", async function (assert) {
     await render(hbs`
       <WithRdfaContext @id="test">
         template block text

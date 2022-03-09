@@ -3,10 +3,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | rdfa/ctx-get', function(hooks) {
+module('Integration | Component | rdfa/ctx-get', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it annotates html elements based on a data model', async function(assert) {
+  test('it annotates html elements based on a data model', async function (assert) {
     const storeService = this.owner.lookup('service:store');
 
     let birthDate = new Date('1990-07-23');
@@ -19,8 +19,8 @@ module('Integration | Component | rdfa/ctx-get', function(hooks) {
       birthDate: birthDate,
       currentProject: storeService.createRecord('project', {
         uri: 'https://github.com/lblod/ember-rdfa-helpers',
-        name: 'ember-rdfa-helpers'
-      })
+        name: 'ember-rdfa-helpers',
+      }),
     });
 
     this.set('personWithProject', personWithProject);
@@ -70,39 +70,45 @@ module('Integration | Component | rdfa/ctx-get', function(hooks) {
       </WithRdfaContext>
     `);
 
-    assert.dom("[data-test-first-name] span")
+    assert
+      .dom('[data-test-first-name] span')
       .hasText('John')
       .hasAttribute('property', 'http://schema.org/givenName');
 
-    assert.dom("[data-test-last-name] b")
+    assert
+      .dom('[data-test-last-name] b')
       .hasText('Doe')
       .hasAttribute('property', 'http://schema.org/familyName')
       .doesNotHaveAttribute('datatype')
       .doesNotHaveAttribute('content');
 
-    assert.dom("[data-test-birth-date] span")
+    assert
+      .dom('[data-test-birth-date] span')
       .hasAttribute('property', 'https://schema.org/birthDate')
       .hasAttribute('datatype', 'xsd:dateTime')
       .hasAttribute('content', '1990-07-23T00:00:00.000Z');
 
     // await this.pauseTest();
 
-    assert.dom("[data-test-project] span")
+    assert
+      .dom('[data-test-project] span')
       .hasText('https://github.com/lblod/ember-rdfa-helpers')
       .hasAttribute('property', 'http://xmlns.com/foaf/0.1/currentProject')
       .hasAttribute('resource', 'https://github.com/lblod/ember-rdfa-helpers')
       .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing');
 
-    assert.dom("[data-test-project-name] div")
+    assert
+      .dom('[data-test-project-name] div')
       .hasAttribute('property', 'http://xmlns.com/foaf/0.1/currentProject')
       .hasAttribute('resource', 'https://github.com/lblod/ember-rdfa-helpers')
       .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing');
 
-    assert.dom("[data-test-project-name] div span")
+    assert
+      .dom('[data-test-project-name] div span')
       .hasAttribute('property', 'http://xmlns.com/foaf/0.1/name');
   });
 
-  test('it properly updates annotations when model data changes', async function(assert) {
+  test('it properly updates annotations when model data changes', async function (assert) {
     const storeService = this.owner.lookup('service:store');
 
     let person = storeService.createRecord('person', {
@@ -122,12 +128,11 @@ module('Integration | Component | rdfa/ctx-get', function(hooks) {
       </WithRdfaContext>
     `);
 
-    const dom = assert.dom("[data-test] span");
+    const dom = assert.dom('[data-test] span');
 
-    dom.hasText('John')
-      .hasAttribute('property', 'http://schema.org/givenName');
+    dom.hasText('John').hasAttribute('property', 'http://schema.org/givenName');
 
-    person.set('firstName', "Joana");
+    person.set('firstName', 'Joana');
 
     await settled();
     dom.hasText('Joana');
@@ -135,7 +140,6 @@ module('Integration | Component | rdfa/ctx-get', function(hooks) {
     this.set('propName', 'lastName');
 
     await settled();
-    dom.hasText('Doe')
-      .hasAttribute('property', 'http://schema.org/familyName');
+    dom.hasText('Doe').hasAttribute('property', 'http://schema.org/familyName');
   });
 });
