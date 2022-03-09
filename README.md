@@ -64,7 +64,7 @@ export default class SomethingModel extends Model {
 The component helpers have evolved between versions. The library currently supports a modernized and an older syntactic version.
 
 The new version is described by:
-- `with-rdfa-context` with nested components `ctx.get`, `ctx.each` and `ctx.img`.
+- `with-rdfa-context` with nested components `ctx.get`, `ctx.each.get` and `ctx.img`.
 - `rdfa/link-to`
 
 Both syntaxes cannot be mixed.
@@ -106,6 +106,7 @@ The following can be supplied to `ctx.get`:
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
 - _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
 
@@ -195,6 +196,7 @@ The following can be supplied to `ctx.each`:
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
 - _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
 
