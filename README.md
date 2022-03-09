@@ -95,6 +95,8 @@ Example:
 </WithRdfaContext>
 ```
 
+The following paragraphs explain the different ways of constructing RDFa data using the received context `ctx`. We made the distinction between `get` and other accessors that look like common HTML-tags such as `div` and `span`. `get` doesn't create an HTML element, but trusts the user to use the `{{rdfa}}` modifier on the correct tag in the body to add the RDFa attributes, while the other accessors do create the elements with attributes automatically. **Keep in mind that modifiers do not run during Ember FastBoot, so using the `{{rdfa}}` modifier does not work. Use the other accessors like `div` and `span` to create elements with RDFa properties during FastBoot.** This does in fact create more nested components in Ember and could possibly negatively impact performance, compared to using the modifier.
+
 #### `ctx.get` and others
 
 Gets a property/relation from the context and applies the right bindings.
