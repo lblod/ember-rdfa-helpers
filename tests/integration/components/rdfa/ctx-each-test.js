@@ -31,7 +31,7 @@ module('Integration | Component | rdfa/ctx-each', function (hooks) {
         as |ctx|
       >
         <ul data-test-projects>
-          <ctx.each @prop="projects" as |attributes value projectCtx|>
+          <ctx.each.get @prop="projects" as |attributes value projectCtx|>
             <li
               property={{attributes.property}}
               resource={{attributes.resource}}
@@ -39,7 +39,7 @@ module('Integration | Component | rdfa/ctx-each', function (hooks) {
             >
               <projectCtx.get @prop="name" />
             </li>
-          </ctx.each>
+          </ctx.each.get>
         </ul>
       </WithRdfaContext>
     `);
@@ -86,7 +86,7 @@ module('Integration | Component | rdfa/ctx-each', function (hooks) {
         as |ctx|
       >
         <ul data-test-projects>
-          <ctx.each @prop="projects" as |attributes value projectCtx|>
+          <ctx.each.get @prop="projects" as |attributes value projectCtx|>
             <li
               property={{attributes.property}}
               resource={{attributes.resource}}
@@ -94,7 +94,7 @@ module('Integration | Component | rdfa/ctx-each', function (hooks) {
             >
               <projectCtx.get @prop="name" />
             </li>
-          </ctx.each>
+          </ctx.each.get>
         </ul>
       </WithRdfaContext>
     `);
