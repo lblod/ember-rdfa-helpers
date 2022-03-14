@@ -9,10 +9,9 @@ export default Component.extend({
   tagName: 'div',
   attributeBindings: ['vocab', 'resource', 'prefix', 'typeof', 'property'],
   resource: and('scope', 'model.uri'),
-  typeof: computed('model.uri', function() {
-    if( this.model && this.model.get('uri') )
+  typeof: computed('model.uri', function () {
+    if (this.model && this.model.get('uri'))
       return this.model.get('rdfaBindings.class');
-    else
-      return null;
-  })
+    else return null;
+  }),
 });
