@@ -14,7 +14,7 @@ module('Integration | Component | ctx/a', function (hooks) {
       lastName: 'Doe',
       birthDate: new Date('1990-07-23'),
       currentProject: storeService.createRecord('project', {
-        id: "5678",
+        id: '5678',
         uri: 'https://github.com/lblod/ember-rdfa-helpers',
         name: 'ember-rdfa-helpers',
       }),
@@ -71,7 +71,7 @@ module('Integration | Component | ctx/a', function (hooks) {
           </ctx.a>
         </div>
       </WithRdfaContext>
-    `)
+    `);
 
     assert
       .dom('[data-test-project-implicit-noblock-link-to] a')
