@@ -11,16 +11,17 @@ const rdfaKeywords = [
   'content',
   'datatype',
   'vocab',
-  'prefix',
+  'prefix'
 ];
 
 export default class RdfaModifier extends Modifier {
-  constructor() {
-    super(...arguments);
+
+  constructor(){
+    super(...arguments)
   }
 
-  get rdfaAttributes() {
-    return this.args.positional[0];
+  get rdfaAttributes(){
+    return this.args.positional[0]
   }
 
   didReceiveArguments() {
@@ -29,4 +30,5 @@ export default class RdfaModifier extends Modifier {
         this.element.setAttribute(key, this.rdfaAttributes[key]);
     }
   }
+
 }
