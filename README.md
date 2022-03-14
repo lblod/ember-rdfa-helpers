@@ -104,11 +104,11 @@ Gets a property/relation from the context and applies the right bindings.
 The following can be supplied to `ctx.get`:
 - _required_ `prop`: name of the JavaScript property of context which will be rendered.
 - _optional_ `property`: override the property with a different semantic property.
-- _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
+- _optional_ `link={{true|false}}` (default `false`): creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
-- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
+- _optional_ `useUri={{true|false}}` (default `false`): only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
 
@@ -233,11 +233,11 @@ Allows looping over a relationship. The interface is very similar to `ctx.get`.
 The following can be supplied to `ctx.each.get`:
 - _required_ `prop`: name of the JavaScript property of context which will be rendered.
 - _optional_ `property`: override the property with a different semantic property.
-- _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
+- _optional_ `link={{true|false}}` (default `false`): creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
-- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
+- _optional_ `useUri={{true|false}}` (default `false`): only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 The component supports a block format as well as a non-block format.
 
@@ -340,21 +340,65 @@ The component takes the following arguments:
 - _required_ `value`: resource to link to
 - _optional_ `link-to`: creates a link to the value using an Ember Route path. The value URI will be set as `resource` attribute, while the passed route path, with the value id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the value using an Ember Route URL. The value URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: Sets the value URI as `href` instead of `resource` attribute on the created link.
-- _optional_ `overrideUri=false`: use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
+- _optional_ `useUri={{true|false}}` (default `false`): Sets the value URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
-Example:
+Example of creating links to projects from a list:
 
 ```handlebars
 <ul>
   {{#each model.projects as |project|}}
     <li>
-      <Rdfa::LinkTo @href-to=(href-to "projects.show" project.code) @value=project}}
+      <Rdfa::LinkTo @link-to="projects.show" @value={{project}}>
         {{project.name}}
       </Rdfa::LinkTo>
     </li>
   {{/each}}
 </ul>
+```
+
+Examples to demonstrate `useUri` and `overrideUri` (each example shows the template code and the produced HTML code):
+
+**Basic usage**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to an Ember route:
+
+<a href="/projects/1234" typeof="http://xmlns.com/foaf/0.1/Thing" resource="https://github.com/lblod/ember-rdfa-helpers">
+  Project X
+</a>
+```
+
+**Using `@useUri`**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @useUri={{true}} @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to the URI of the project and leaves the redundant resource property:
+
+<a href="https://github.com/lblod/ember-rdfa-helpers" typeof="http://xmlns.com/foaf/0.1/Thing">
+  Project X
+</a>
+```
+
+**Using `@overrideUri`**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @overrideUri={{true}} @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to an Ember route with the resource actually being part of the web application:
+
+<a href="/projects/1234" typeof="http://xmlns.com/foaf/0.1/Thing" resource="/projects/1234">
+  Project X
+</a>
 ```
 
 ### Component helpers (v0.1.x)
