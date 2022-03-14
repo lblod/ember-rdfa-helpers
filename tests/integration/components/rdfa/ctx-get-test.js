@@ -142,4 +142,59 @@ module('Integration | Component | rdfa/ctx-get', function (hooks) {
     await settled();
     dom.hasText('Doe').hasAttribute('property', 'http://schema.org/familyName');
   });
+
+  test('it annotates html elements with the rdfa modifier', async function (assert) {
+    const storeService = this.owner.lookup('service:store');
+
+    let birthDate = new Date('1990-07-23');
+    birthDate.setFullYear(1990);
+
+    let personWithProject = storeService.createRecord('person', {
+      uri: 'http://example.com/person/1234',
+      firstName: 'John',
+      lastName: 'Doe',
+      birthDate: birthDate,
+      currentProject: storeService.createRecord('project', {
+        uri: 'https://github.com/lblod/ember-rdfa-helpers',
+        name: 'ember-rdfa-helpers',
+      }),
+    });
+
+    this.set('personWithProject', personWithProject);
+
+    await render(hbs`
+      <WithRdfaContext id="context" @model={{this.personWithProject}} as |ctx|>
+        {{! literal + block form}}
+        <div data-test-last-name>
+          <ctx.get @prop="lastName" as |attributes value ctx|>
+            <b {{rdfa attributes}}>
+              {{value}}
+            </b>
+          </ctx.get>
+        </div>
+
+        {{! resource + block }}
+        <div data-test-project-name>
+          <ctx.get @prop="currentProject" as |attributes value ctx|>
+            <div {{rdfa attributes}}>
+              <ctx.get @prop="name" />
+            </div>
+          </ctx.get>
+        </div>
+      </WithRdfaContext>
+    `);
+
+    assert
+      .dom('[data-test-last-name] b')
+      .hasText('Doe')
+      .hasAttribute('property', 'http://schema.org/familyName')
+      .doesNotHaveAttribute('datatype')
+      .doesNotHaveAttribute('content');
+
+    assert
+      .dom('[data-test-project-name] div')
+      .hasAttribute('property', 'http://xmlns.com/foaf/0.1/currentProject')
+      .hasAttribute('resource', 'https://github.com/lblod/ember-rdfa-helpers')
+      .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing');
+  });
 });
