@@ -88,7 +88,13 @@
             {{yield (hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent) data.value}}
           {{/if}}
         {{else}}
-          <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{data.value}}</span>
+          {{#if @subComponent}}
+            <@subComponent @attributes={{hash property=data.rdfaProperty datatype=data.rdfaDatatype content=data.rdfaContent}} ...attributes>
+              {{data.value}}
+            </@subComponent>
+          {{else}}
+            <span property={{data.rdfaProperty}} datatype={{data.rdfaDatatype}} content={{data.rdfaContent}} ...attributes>{{data.value}}</span>
+          {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}
