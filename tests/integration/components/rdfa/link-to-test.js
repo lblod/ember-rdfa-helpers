@@ -6,7 +6,7 @@ import hbs from 'htmlbars-inline-precompile';
 module('Integration | Component | rdfa/link-to', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('basic usage', async function (assert) {
+  test('basic usage without href', async function (assert) {
     const storeService = this.owner.lookup('service:store');
     let project = storeService.createRecord('project', {
       uri: 'https://github.com/lblod/ember-rdfa-helpers',
@@ -20,6 +20,34 @@ module('Integration | Component | rdfa/link-to', function(hooks) {
         class="someClass"
         @value={{this.project}}
       >
+        basic usage without href
+      </Rdfa::LinkTo>
+    `);
+
+    assert
+      .dom('a')
+      .hasText('basic usage without href')
+      .hasClass('someClass') //testing ...attributes
+      .doesNotHaveAttribute('href')
+      .doesNotHaveAttribute('property')
+      .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing')
+      .hasAttribute('resource', 'https://github.com/lblod/ember-rdfa-helpers');
+  });
+
+  test('basic usage', async function (assert) {
+    const storeService = this.owner.lookup('service:store');
+    let project = storeService.createRecord('project', {
+      uri: 'https://github.com/lblod/ember-rdfa-helpers',
+      name: 'ember-rdfa-helpers',
+      id: "1234"
+    });
+    this.set('project', project);
+
+    await render(hbs`
+      <Rdfa::LinkTo
+        @value={{this.project}}
+        @link-to="projects.show"
+      >
         basic usage
       </Rdfa::LinkTo>
     `);
@@ -27,8 +55,7 @@ module('Integration | Component | rdfa/link-to', function(hooks) {
     assert
       .dom('a')
       .hasText('basic usage')
-      .hasClass('someClass') //testing ...attributes
-      .doesNotHaveAttribute('href')
+      .hasAttribute('href', '/projects/1234')
       .doesNotHaveAttribute('property')
       .hasAttribute('typeof', 'http://xmlns.com/foaf/0.1/Thing')
       .hasAttribute('resource', 'https://github.com/lblod/ember-rdfa-helpers');
