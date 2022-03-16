@@ -1,8 +1,8 @@
 <a
   href={{if @useUri this.uri this.url}}
-  property={{this.property}}
+  property={{@property}}
   typeof={{@value.rdfaBindings.class}}
-  resource={{if @useUri undefined this.uri}}
+  resource={{if @useUri undefined (if @overrideUri this.url this.uri)}}
   {{on "click" this.transition}}
   ...attributes
 >

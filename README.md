@@ -64,7 +64,7 @@ export default class SomethingModel extends Model {
 The component helpers have evolved between versions. The library currently supports a modernized and an older syntactic version.
 
 The new version is described by:
-- `with-rdfa-context` with nested components `ctx.get`, `ctx.each` and `ctx.img`.
+- `with-rdfa-context` with nested components `ctx.get`, `ctx.each.get` and `ctx.img`.
 - `rdfa/link-to`
 
 Both syntaxes cannot be mixed.
@@ -95,17 +95,20 @@ Example:
 </WithRdfaContext>
 ```
 
-#### `ctx.get`
+The following paragraphs explain the different ways of constructing RDFa data using the received context `ctx`. We made the distinction between `get` and other accessors that look like common HTML-tags such as `div` and `span`. `get` doesn't create an HTML element, but trusts the user to use the `{{rdfa}}` modifier on the correct tag in the body to add the RDFa attributes, while the other accessors do create the elements with attributes automatically. **Keep in mind that modifiers do not run during Ember FastBoot, so using the `{{rdfa}}` modifier does not work. Use the other accessors like `div` and `span` to create elements with RDFa properties during FastBoot.** This does in fact create more nested components in Ember and could possibly negatively impact performance, compared to using the modifier.
+
+#### `ctx.get` and others
 
 Gets a property/relation from the context and applies the right bindings.
 
 The following can be supplied to `ctx.get`:
 - _required_ `prop`: name of the JavaScript property of context which will be rendered.
 - _optional_ `property`: override the property with a different semantic property.
-- _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
+- _optional_ `link={{true|false}}` (default `false`): creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `useUri={{true|false}}` (default `false`): only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
 The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
 
@@ -125,14 +128,29 @@ Examples:
 </WithRdfaContext>
 ```
 
+Alternatively, use one of the supported subcomponents to create an element other than a simple span. Supported subcomponents are `span`, `div`, `link`, `a` and `p`.
+
+Example:
+
+```handlebars
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.div @prop="name" />
+</WithRdfaContext>
+```
+
+This example will do exactly as above, but by creating a `div` instead of an implicit `span`. Note that when creating a link with `@link={{true}}`, you should be carefull to use `ctx.a` to explicitely create a link or `ctx.get` to implicitely create a link. Other elements won't create a proper link.
+
+
 ##### Block format
 
-The block format receives the following params:
+**`ctx.get`**
+
+The block format using `ctx.get` receives the following params:
 - `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
+The block format with `get` offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
@@ -184,63 +202,115 @@ Examples:
 Warning: Even though the `elements` property can be renamed by the user, when using `ctx.get` in its angle brackets form, don't replace it by `attrs`.
 This keyword is already used by the core code of components in Ember Octane.
 
-#### `ctx.each`
+**`ctx.span`, `ctx.div`, `ctx.p`, `ctx.li`, `ctx.a`, `ctx.link`, ...**
+
+The block format using these subcomponents receives the following params:
+- `value`: value of the property
+- `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
+
+*Note the missing `elements` parameter from `ctx.get`. This is because an HTML element is spawned with the correct RDFa properties attached and is does not make sense to place those properties more than once in the HTML.*
+
+The mechanism for all supported subcomponents is similar to `get`. The following example shows two equivalent blocks, one using `ctx.get` and one using `ctx.div` to demonstrate their use.
+
+```handlebars
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.get @prop="name" as |elements value|>
+    <div {{rdfa elements}} class="some-custom-css-class">The value is: {{value}}</div>
+  </ctx.get>
+</WithRdfaContext>
+
+<WithRdfaContext @model={{person}} as |ctx|>
+  <ctx.div @prop="name" class="some-custom-css-class" as |value|>
+    The value is: {{value}}
+  </ctx.div>
+</WithRdfaContext>
+```
+
+#### `ctx.each.get`
 
 Allows looping over a relationship. The interface is very similar to `ctx.get`.
 
-The following can be supplied to `ctx.each`:
+The following can be supplied to `ctx.each.get`:
 - _required_ `prop`: name of the JavaScript property of context which will be rendered.
 - _optional_ `property`: override the property with a different semantic property.
-- _optional_ `link=true`: creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
+- _optional_ `link={{true|false}}` (default `false`): creates a link to the related resource. The related resource URI will be set as `href` attribute. This should be used for URLs outside your application. Otherwise, use the `link-to` or `href-to` option.
 - _optional_ `link-to`: creates a link to the related resource using an Ember Route path. The related resource URI will be set as `resource` attribute, while the passed route path, with the related resource id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the related resource using an Ember Route URL. The related resource URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `useUri={{true|false}}` (default `false`): only applicable if `link-to` or `href-to` are set. Sets the resource URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
-The component supports a block format as well as a non-block format. Only in case `link-to` is used, a block must be passed.
+The component supports a block format as well as a non-block format.
 
 ##### Non-block format
 
-The non-block format doesn't allow any customization of the rendered output (e.g. tag name, CSS classes).
+The non-block format places a `span` in the HTML with the proper RDFa properties attached, containing the value of the property.
 
 Example:
 
 ```handlebars
 <WithRdfaContext @model={{person}} as |ctx|>
-  <ctx.each @prop="nicknames" />
+  <ctx.each.get @prop="nicknames" />
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} as |ctx|>
-  <ctx.each @prop="homepages" @link={{true}} />
+  <ctx.each.get @prop="homepages" @link={{true}} />
 </WithRdfaContext>
 ```
 
 ##### Block format
 
-The block format receives the following params:
+**`ctx.each.get`**
+
+The block format using `ctx.each.get` receives the following params:
 - `elements`: RDFa attributes to apply on a node using the `{{rdfa}}` modifier
 - `value`: value of the property
 - `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
 - `index`: index of the value in the array
 
-The block format offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
+The block format using `ctx.each.get` offers more flexibility in terms of layout and rendering, but the user is responsible to apply the RDFa attributes it receives as a param on a node in the block using the `{{rdfa}}` modifier. If the `elements` param is not applied on a node, the content will not be annotated.
 
 Examples:
 
 ```handlebars
 <WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
-  <ctx.each @prop="funders" @link={{true}} as |elements funder|>
+  <ctx.each.get @prop="funders" @link={{true}} as |elements funder|>
     <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
-  </ctx.each>
+  </ctx.each.get>
 </WithRdfaContext>
 
 <WithRdfaContext @model={{person}} @tagName="ul" as |ctx|>
   <ul>
-    <ctx.each @prop="accounts" as |elements account accountCtx|>
+    <ctx.each.get @prop="accounts" as |elements account accountCtx|>
       <li {{rdfa elements}}>
         <accountCtx.get @prop="accountServiceHomepage" @link={{true}} />
       </li>
-    </ctx.each>
+    </ctx.each.get>
   </ul>
+</WithRdfaContext>
+```
+
+**`ctx.each.span`, `ctx.each.div`, `ctx.each.p`, `ctx.each.link`, `ctx.each.a`, `ctx.each.li`, `ctx.each.lia`, ...**
+
+The block format using these subcomponents receives the following params:
+- `value`: value of the property
+- `ctx`: new context to create nested annotations (only passed in case the value is a resource, not a literal)
+- `index`: index of the value in the array
+
+*Note the missing `elements` parameter from `ctx.get`. This is because an HTML element is spawned with the correct RDFa properties attached and is does not make sense to place those properties more than once in the HTML.*
+
+The mechanism for all supported subcomponents is similar to `get`. The following example shows two equivalent blocks, one using `ctx.each.get` and one using `ctx.each.div` to demonstrate their use.
+
+```handlebars
+<WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
+  <ctx.each.get @prop="funders" @link={{true}} as |elements funder|>
+    <li><a {{rdfa elements}}>{{funder.firstName}} {{funder.lastName}}</a></li>
+  </ctx.each.get>
+</WithRdfaContext>
+
+<WithRdfaContext @model={{project}} @tagName="ul" as |ctx|>
+  <ctx.each.lia @prop="funders" @link={{true}} as |funder|>
+    {{funder.firstName}} {{funder.lastName}}
+  </ctx.each.lia>
 </WithRdfaContext>
 ```
 
@@ -270,20 +340,65 @@ The component takes the following arguments:
 - _required_ `value`: resource to link to
 - _optional_ `link-to`: creates a link to the value using an Ember Route path. The value URI will be set as `resource` attribute, while the passed route path, with the value id as argument, will be set as `href` attribute.
 - _optional_ `href-to`: creates a link to the value using an Ember Route URL. The value URI will be set as `resource` attribute, while the passed route URL will be set as `href` attribute. Use the `{{href-to}}` helper of [ember-href-to](https://github.com/intercom/ember-href-to) to construct the URL.
-- _optional_ `useUri=false`: Sets the value URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `useUri={{true|false}}` (default `false`): Sets the value URI as `href` instead of `resource` attribute on the created link.
+- _optional_ `overrideUri={{true|false}}` (default `false`): use this option to replace the URI of the resource with the `href` supplied via `link-to` of `href-to`. Use this to refer to a part of the web application as a resource. Most likely used with an overriden `property` as well.
 
-Example:
+Example of creating links to projects from a list:
 
 ```handlebars
 <ul>
   {{#each model.projects as |project|}}
     <li>
-      <Rdfa::LinkTo @href-to=(href-to "projects.show" project.code) @value=project}}
+      <Rdfa::LinkTo @link-to="projects.show" @value={{project}}>
         {{project.name}}
       </Rdfa::LinkTo>
     </li>
   {{/each}}
 </ul>
+```
+
+Examples to demonstrate `useUri` and `overrideUri` (each example shows the template code and the produced HTML code):
+
+**Basic usage**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to an Ember route:
+
+<a href="/projects/1234" typeof="http://xmlns.com/foaf/0.1/Thing" resource="https://github.com/lblod/ember-rdfa-helpers">
+  Project X
+</a>
+```
+
+**Using `@useUri`**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @useUri={{true}} @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to the URI of the project and leaves the redundant resource property:
+
+<a href="https://github.com/lblod/ember-rdfa-helpers" typeof="http://xmlns.com/foaf/0.1/Thing">
+  Project X
+</a>
+```
+
+**Using `@overrideUri`**
+
+```handlebars
+<Rdfa::LinkTo @link-to="projects.show" @overrideUri={{true}} @value={{project}}>
+  {{project.name}}
+</Rdfa::LinkTo>
+
+creates a link to an Ember route with the resource actually being part of the web application:
+
+<a href="/projects/1234" typeof="http://xmlns.com/foaf/0.1/Thing" resource="/projects/1234">
+  Project X
+</a>
 ```
 
 ### Component helpers (v0.1.x)

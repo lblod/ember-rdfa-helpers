@@ -10,17 +10,17 @@
   <div>
     <ctx.get @prop="firstName" /> <ctx.get @prop="lastName" />
     is born on
-    <ctx.get @prop="birthDate" as |attributes value|>
-      <span {{rdfa attributes}}>{{format-date value}}</span>
-    </ctx.get>
+    <ctx.span @prop="birthDate" as |value|>
+      {{format-date value}}
+    </ctx.span>
     For more info, have a look at
-    <ctx.get @prop="homepage" @link={{true}} as |attributes|>
-      <a {{rdfa attributes}}>his homepage</a>
-    </ctx.get>
+    <ctx.a @prop="homepage" @link={{true}}>
+      his homepage
+    </ctx.a>
   </div>
   <div>
     He's also known by nicknames:
-    <ctx.each @prop="nicknames" />
+    <ctx.each.get @prop="nicknames" />
   </div>
   <div>
     Link to the project detail page of
@@ -34,20 +34,18 @@
       <span {{rdfa attributes}}>{{project.name}}</span>
       which is funded by:
       <ul>
-        <projectCtx.each @prop="funders" @link={{true}} as |attributes funder|>
-          <li><a {{rdfa attributes}}>{{funder.firstName}} {{funder.lastName}}</a></li>
-        </projectCtx.each>
+        <projectCtx.each.lia @prop="funders" @link={{true}} as |funder|>
+          {{funder.firstName}} {{funder.lastName}}
+        </projectCtx.each.lia>
       </ul>
     </ctx.get>
   </div>
   <div>
     You can find him online at:
     <ul>
-      <ctx.each @prop="accounts" as |attributes account AccountCtx|>
-        <li {{rdfa attributes}}>
+      <ctx.each.li @prop="accounts" as |account AccountCtx|>
           <AccountCtx.get @prop="accountServiceHomepage" @link={{true}} /> as <AccountCtx.get @prop="accountName" />
-       </li>
-      </ctx.each>
+      </ctx.each.li>
     </ul>
   </div>
 </WithRdfaContext>
