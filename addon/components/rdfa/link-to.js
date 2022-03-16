@@ -10,8 +10,7 @@ export default class LinkToComponent extends Component {
   }
 
   get url() {
-    if (this.args['href-to'])
-      return this.args['href-to'];
+    if (this.args['href-to']) return this.args['href-to'];
     if (this.args['link-to'])
       return this.router.urlFor(this.args['link-to'], this.args.value);
     else return undefined;

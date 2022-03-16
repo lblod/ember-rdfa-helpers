@@ -3,29 +3,29 @@ import { inject as service } from '@ember/service';
 
 export default class ApplicationRoute extends Route {
   @service store;
-  
+
   model() {
     const projectX = this.store.createRecord('project', {
       uri: 'http://data.semte.ch/projects/1',
       name: 'Project X',
-      code: 'X'
+      code: 'X',
     });
 
     const projectY = this.store.createRecord('project', {
       uri: 'http://data.semte.ch/projects/2',
       name: 'Project Y',
-      code: 'Y'
+      code: 'Y',
     });
 
     const github = this.store.createRecord('account', {
       uri: 'http://data.semte.ch/accounts/1',
       accountName: 'apple',
-      accountServiceHomepage: 'http://www.github.com'
+      accountServiceHomepage: 'http://www.github.com',
     });
     const docker = this.store.createRecord('account', {
       uri: 'http://data.semte.ch/accounts/2',
       accountName: 'banana',
-      accountServiceHomepage: 'http://cloud.docker.com'
+      accountServiceHomepage: 'http://cloud.docker.com',
     });
 
     const person = this.store.createRecord('person', {
@@ -34,9 +34,10 @@ export default class ApplicationRoute extends Route {
       lastName: 'Doe',
       nicknames: ['JD', 'Mister X', 'Johnie'],
       birthDate: new Date(),
-      profilePicture: 'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png',
+      profilePicture:
+        'https://pickaface.net/gallery/avatar/nfox.inc537df2da44c30.png',
       homepage: 'http://www.john.doe',
-      currentProject: projectX
+      currentProject: projectX,
     });
 
     person.get('accounts').pushObject(github);
@@ -45,13 +46,13 @@ export default class ApplicationRoute extends Route {
     const richie = this.store.createRecord('person', {
       uri: 'https://en.wikipedia.org/wiki/Richie_Rich_(comics)',
       firstName: 'Richie',
-      lastName: 'Rich'
+      lastName: 'Rich',
     });
 
     const tim = this.store.createRecord('person', {
       uri: 'https://www.w3.org/People/Berners-Lee/',
       firstName: 'Tim',
-      lastName: 'Berners-Lee'
+      lastName: 'Berners-Lee',
     });
 
     projectX.get('funders').pushObject(richie);
@@ -59,7 +60,7 @@ export default class ApplicationRoute extends Route {
 
     return {
       person,
-      projects: [ projectX, projectY ]
+      projects: [projectX, projectY],
     };
   }
 }
